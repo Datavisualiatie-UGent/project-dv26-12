@@ -12,7 +12,7 @@ your development workflow?*
 plot bars representing the percentage of answer of different categories (colorring green to red)
 Goal: introduction to the AI landscape for specific groups developers. 
 
-### AI specific model usage: Correlation matrix (Hendrik)
+### AI specific model usage: Correlation matrix (Hendrik) (AIModels)
 *Which LLM models for AI tools have you used for
 development work in the past year, and which would you
 like to use next year? Select all that apply.*
