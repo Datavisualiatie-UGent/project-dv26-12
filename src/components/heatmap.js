@@ -25,19 +25,55 @@ export function computeOrders(data) {
   return { workedOrder, wantOrder };
 }
 
+export function normalizeByWorked(data) {
+  const totals = new Map();
+
+  // compute totals per worked model
+  for (const d of data) {
+    totals.set(d.worked, (totals.get(d.worked) || 0) + d.value);
+  }
+
+  console.log(
+    data.filter(d => d.worked === "Reka")
+  );
+
+  // normalize
+  return data.map(d => ({
+    worked: d.worked,
+    want: d.want,
+    value: d.value / totals.get(d.worked)
+  }));
+}
+
 export function Heatmap(data, workedOrder, wantOrder, width = 900) {
+    console.log(data);
   return Plot.plot({
     width,
     height: width * 0.6,
+    marginLeft: 100,
+    marginBottom: 60,
     x: { domain: wantOrder },
     y: { domain: workedOrder },
-    color: { type: "log", scheme: "blues" },
+    color: {
+        type: "linear",
+        scheme: "blues",
+        domain: [0, d3.max(data, d => d.value)],
+        legend: true
+    },
+    /* color: {
+        type: "quantile",
+        scheme: "blues",
+        n: 6,
+        legend: true
+        }, */
     marks: [
       Plot.rect(data, {
         x: "want",
         y: "worked",
         fill: "value",
-        title: d => `${d.worked} → ${d.want}\n${d.value}`
+        title: d =>
+        `${d.worked} → ${d.want}
+        ${(d.value * 100).toFixed(2)}%`
       })
     ]
   });

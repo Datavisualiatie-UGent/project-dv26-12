@@ -70,10 +70,13 @@ Here are some ideas of things you could try…
 # Heatmap
 
 ```js
-import { computeOrders, Heatmap } from "./components/heatmap.js"
+import { computeOrders, Heatmap, normalizeByWorked } from "./components/heatmap.js"
 
-const data = await FileAttachment("./data/heatmap.json").json()
-const { workedOrder, wantOrder } = computeOrders(data)
+const raw = await FileAttachment("./data/heatmap.json").json()
+const data = normalizeByWorked(raw)
+const dataNoSelf = data.filter(d => d.worked !== d.want);
+
+const { workedOrder, wantOrder } = computeOrders(raw)
 ```
 
 <div class="card">${
