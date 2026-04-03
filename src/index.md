@@ -70,7 +70,8 @@ Here are some ideas of things you could try…
 # Heatmap
 
 ```js
-import { computeOrders, Heatmap, normalizeByWorked } from "./components/heatmap.js"
+import { computeOrders, Heatmap } from "./components/heatmap.js"
+import { normalizeByWorked } from "./components/utils.js"
 
 const raw = await FileAttachment("./data/heatmap.json").json()
 const data = normalizeByWorked(raw)
@@ -81,6 +82,32 @@ const { workedOrder, wantOrder } = computeOrders(raw)
 
 <div class="card">${
   resize(width => Heatmap(data, workedOrder, wantOrder, width))
+}</div>
+
+# Sankey Diagram
+```js
+// Import the select input
+import * as Inputs from "npm:@observablehq/inputs";
+import { toSankey, buildSankeyGraph, filterSankeyByNode } from "./components/sankey.js"
+
+const normalised_data = await FileAttachment("./data/sankey_normalised.json").json()
+
+// 1. Get a unique list of companies for the dropdown
+const companies = Array.from(new Set(normalised_data.map(d => d.worked))).sort();
+```
+
+```js
+// Define the UI component
+const companyInput = Inputs.select(companies, {label: "Select", value: "OpenAI"});
+const selectedCompany = view(companyInput);
+```
+
+```js
+const sankeyData = toSankey(normalised_data, selectedCompany);
+```
+
+<div class="card" style="min-height: 500px;">${
+  resize(width => buildSankeyGraph(sankeyData, width))
 }</div>
 
 <style>

@@ -25,28 +25,7 @@ export function computeOrders(data) {
   return { workedOrder, wantOrder };
 }
 
-export function normalizeByWorked(data) {
-  const totals = new Map();
-
-  // compute totals per worked model
-  for (const d of data) {
-    totals.set(d.worked, (totals.get(d.worked) || 0) + d.value);
-  }
-
-  console.log(
-    data.filter(d => d.worked === "Reka")
-  );
-
-  // normalize
-  return data.map(d => ({
-    worked: d.worked,
-    want: d.want,
-    value: d.value / totals.get(d.worked)
-  }));
-}
-
 export function Heatmap(data, workedOrder, wantOrder, width = 900) {
-    console.log(data);
   return Plot.plot({
     width,
     height: width * 0.6,
