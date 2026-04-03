@@ -67,6 +67,19 @@ Here are some ideas of things you could try…
   </div>
 </div>
 
+# Heatmap
+
+```js
+import { computeOrders, Heatmap } from "./components/heatmap.js"
+
+const data = await FileAttachment("./data/heatmap.json").json()
+const { workedOrder, wantOrder } = computeOrders(data)
+```
+
+<div class="card">${
+  resize(width => Heatmap(data, workedOrder, wantOrder, width))
+}</div>
+
 <style>
 
 .hero {
