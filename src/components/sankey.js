@@ -1,5 +1,5 @@
 import * as d3 from "npm:d3";
-import { sankey, sankeyLinkHorizontal, sankeyJustify } from "npm:d3-sankey";
+import { sankey, sankeyLinkHorizontal, sankeyJustify, sankeyCenter } from "npm:d3-sankey";
 
 export function filterSankeyByNode(data, selected = "OpenAI") {
   const links = data.links.filter(
@@ -37,58 +37,87 @@ export function buildLinks(data) {
   }));
 }
 
-export function toSankey(data) {
+export function toSankey(data, selected) {
   const nodes = buildNodes(data);
   console.log("Nodes:", nodes);
+
   const links = buildLinks(data);
   console.log("Links:", links);
-  data = { nodes, links };
 
-  return filterSankeyByNode(data);
+  console.log("Selected company", selected);
+
+  selected = selected || "OpenAI"; // default to first node if none selected
+  return filterSankeyByNode({nodes, links}, selected);
 }
 
 export function buildSankeyGraph(data, width = 800) {
-  const height = 600;
+  const height = 500;
   const margin = 10;
 
-  const svg = d3.create("svg")
+  const svg = createSvg(width, height);
+  const graph = createLayout(data, width, height, margin);
+  const color = d3.scaleOrdinal(d3.schemeTableau10);
+
+  renderLinks(svg, graph.links, color);
+  renderNodes(svg, graph.nodes, width);
+
+  return svg.node();
+}
+
+function createSvg(width, height) {
+  return d3.create("svg")
     .attr("viewBox", [0, 0, width, height])
     .attr("width", width)
     .attr("height", height)
-    .attr("style", "max-width: 100%; height: auto; font-family: sans-serif;");
+    .attr(
+      "style",
+      "max-width: 100%; height: auto; font-family: sans-serif; display: block; margin: auto;"
+    );
+}
 
+function createLayout(data, width, height, margin) {
   const layout = sankey()
     .nodeId(d => d.id)
-    .nodeAlign(sankeyJustify)
+    .nodeAlign(sankeyCenter)
     .nodeWidth(15)
     .nodePadding(15)
     .extent([[margin, margin], [width - margin, height - margin]]);
 
-  // D3-Sankey modifies the data in-place, so we pass a deep copy
-  const graph = layout({
-    nodes: data.nodes.map(d => ({...d})),
-    links: data.links.map(d => ({...d}))
+  return layout({
+    nodes: data.nodes.map(d => ({ ...d })),
+    links: data.links.map(d => ({ ...d }))
   });
+}
 
-  // Render Links
-  svg.append("g")
+function renderLinks(svg, links, color) {
+  const link = svg.append("g")
     .attr("fill", "none")
-    .attr("stroke-opacity", 0.3)
     .selectAll("path")
-    .data(graph.links)
+    .data(links)
     .join("path")
-      .attr("d", sankeyLinkHorizontal())
-      .attr("stroke", "#cbd5e1")
-      .attr("stroke-width", d => Math.max(1, d.width))
-      .on("mouseover", function() { d3.select(this).attr("stroke-opacity", 0.7); }) // Interactivity!
-      .on("mouseout", function() { d3.select(this).attr("stroke-opacity", 0.3); })
-      .append("title")
-      .text(d => `${d.source.id} → ${d.target.id}\n${(d.value * 100).toFixed(2)}%`);
+    .attr("d", sankeyLinkHorizontal())
+    .attr("stroke", d => d3.color(color(d.source.id)).copy({ opacity: 0.35 }))
+    .attr("stroke-width", d => Math.max(1, d.width))
+    .style("mix-blend-mode", "multiply")
+    .style("transition", "stroke-opacity 150ms");
 
-  // Render Nodes
+  link
+    .on("mouseover", (event, d) => {
+      svg.selectAll("path")
+        .attr("stroke-opacity", l => (l === d ? 0.85 : 0.08));
+    })
+    .on("mouseout", () => {
+      svg.selectAll("path").attr("stroke-opacity", 1);
+    });
+
+  link.append("title")
+    .text(d => `${d.source.id} → ${d.target.id}\n${formatPct(d.value)}`);
+}
+
+function renderNodes(svg, nodes, width) {
   const node = svg.append("g")
     .selectAll("g")
-    .data(graph.nodes)
+    .data(nodes)
     .join("g");
 
   node.append("rect")
@@ -98,17 +127,20 @@ export function buildSankeyGraph(data, width = 800) {
     .attr("width", d => d.x1 - d.x0)
     .attr("fill", "#4f46e5")
     .append("title")
-    .text(d => `${d.id}\nTotal: ${(d.value * 100).toFixed(2)}%`);
+    .text(d => `${d.id}\nTotal: ${formatPct(d.value)}`);
 
-  // Render Labels
   node.append("text")
-    .attr("x", d => d.x0 < width / 2 ? d.x1 + 6 : d.x0 - 6)
+    .attr("x", d => d.x0 < width / 2 ? d.x1 + 8 : d.x0 - 8)
     .attr("y", d => (d.y1 + d.y0) / 2)
     .attr("dy", "0.35em")
     .attr("text-anchor", d => d.x0 < width / 2 ? "start" : "end")
-    .attr("fill", "currentColor")
     .text(d => d.id)
-    .style("font-size", "12px");
+    .style("font-size", "12px")
+    .style("font-weight", 500)
+    .style("fill", "currentColor")
+    .style("pointer-events", "none");
+}
 
-  return svg.node();
+function formatPct(v) {
+  return `${(v * 100).toFixed(2)}%`;
 }
