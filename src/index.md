@@ -44,7 +44,7 @@ toc: false
 # Heatmap
 
 ```js
-import { computeOrders, Heatmap } from "./components/heatmap.js"
+import { computeOrders, Heatmap } from "./components/hendrik/heatmap.js"
 import { normalizeByWorked } from "./components/utils.js"
 
 const raw = await FileAttachment("./data/heatmap.json").json()
@@ -62,11 +62,10 @@ const { workedOrder, wantOrder } = computeOrders(raw)
 ```js
 // Import the select input
 import * as Inputs from "npm:@observablehq/inputs";
-import { toSankey, buildSankeyGraph, filterSankeyByNode } from "./components/sankey.js"
+import { toSankey, buildSankeyGraph, filterSankeyByNode } from "./components/hendrik/sankey.js"
 
 const normalised_data = await FileAttachment("./data/model_usage_normalised.json").json()
 
-// 1. Get a unique list of companies for the dropdown
 const companies = Array.from(new Set(normalised_data.map(d => d.worked))).sort();
 ```
 
@@ -86,7 +85,7 @@ const sankeyData = toSankey(normalised_data, selectedCompany);
 # Difference Heatmap
 
 ```js
-import { DifferenceHeatmap } from "./components/difference_heatmap.js"
+import { DifferenceHeatmap } from "./components/hendrik/difference_heatmap.js"
 ```
 
 <div class="card" style="min-height: 500px;">${
