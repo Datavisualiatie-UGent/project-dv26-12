@@ -84,18 +84,18 @@ export function DifferenceHeatmap(data, width = 900) {
 
                     if (v > 0) {
                         return `${d.worked} → ${d.want}
-                    Net flow: +${abs.toFixed(2)}%
-                    People are moving from ${d.worked} → ${d.want}`;
-                    }
+Net flow: +${abs.toFixed(2)}%
+People are moving from ${d.worked} → ${d.want}`;
+}
 
-                    if (v < 0) {
-                        return `${d.worked} → ${d.want}
-                    Net flow: -${abs.toFixed(2)}%
-                    People are moving from ${d.want} → ${d.worked}`;
-                    }
+if (v < 0) {
+    return `${d.worked} → ${d.want}
+Net flow: -${abs.toFixed(2)}%
+People are moving from ${d.want} → ${d.worked}`;
+}
 
-                    return `${d.worked} → ${d.want}
-                    Balanced flow (0%)`;
+return `${d.worked} → ${d.want}
+Balanced flow (0%)`;
                 }
             }
         )]
