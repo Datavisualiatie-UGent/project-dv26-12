@@ -70,7 +70,8 @@ Here are some ideas of things you could try…
 # Heatmap
 
 ```js
-import { computeOrders, Heatmap, normalizeByWorked } from "./components/heatmap.js"
+import { computeOrders, Heatmap } from "./components/heatmap.js"
+import { normalizeByWorked } from "./components/utils.js"
 
 const raw = await FileAttachment("./data/heatmap.json").json()
 const data = normalizeByWorked(raw)
@@ -81,6 +82,19 @@ const { workedOrder, wantOrder } = computeOrders(raw)
 
 <div class="card">${
   resize(width => Heatmap(data, workedOrder, wantOrder, width))
+}</div>
+
+# Sankey Diagram
+```js
+import { toSankey, buildSankeyGraph, filterSankeyByNode } from "./components/sankey.js"
+
+const normalised_data = await FileAttachment("./data/sankey_normalised.json").json()
+
+const sankeyData = toSankey(normalised_data)
+```
+
+<div class="card">${
+  resize(width => buildSankeyGraph(filterSankeyByNode(sankeyData), width))
 }</div>
 
 <style>
