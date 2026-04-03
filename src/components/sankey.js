@@ -32,7 +32,7 @@ export function buildNodes(data) {
 export function buildLinks(data) {
   return data.map(d => ({
     source: d.worked,
-    target: d.want,
+    target: d.worked === d.want ? `${d.want} (Stayed)` : d.want,
     value: d.value
   }));
 }
@@ -42,10 +42,9 @@ export function toSankey(data) {
   console.log("Nodes:", nodes);
   const links = buildLinks(data);
   console.log("Links:", links);
-  const filteredLinks = filterSankeyByNode({ nodes, links }, "OpenAI").links;
-  console.log("Filtered Links:", filteredLinks);
+  data = { nodes, links };
 
-  return { nodes, links };
+  return filterSankeyByNode(data);
 }
 
 export function buildSankeyGraph(data, width = 800) {
@@ -81,8 +80,10 @@ export function buildSankeyGraph(data, width = 800) {
       .attr("d", sankeyLinkHorizontal())
       .attr("stroke", "#cbd5e1")
       .attr("stroke-width", d => Math.max(1, d.width))
+      .on("mouseover", function() { d3.select(this).attr("stroke-opacity", 0.7); }) // Interactivity!
+      .on("mouseout", function() { d3.select(this).attr("stroke-opacity", 0.3); })
       .append("title")
-      .text(d => `${d.source.id} → ${d.target.id}\n${d.value.toFixed(4)}`);
+      .text(d => `${d.source.id} → ${d.target.id}\n${(d.value * 100).toFixed(2)}%`);
 
   // Render Nodes
   const node = svg.append("g")
@@ -95,7 +96,9 @@ export function buildSankeyGraph(data, width = 800) {
     .attr("y", d => d.y0)
     .attr("height", d => d.y1 - d.y0)
     .attr("width", d => d.x1 - d.x0)
-    .attr("fill", "#4f46e5");
+    .attr("fill", "#4f46e5")
+    .append("title")
+    .text(d => `${d.id}\nTotal: ${(d.value * 100).toFixed(2)}%`);
 
   // Render Labels
   node.append("text")

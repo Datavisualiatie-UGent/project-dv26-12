@@ -94,7 +94,7 @@ const sankeyData = toSankey(normalised_data)
 ```
 
 <div class="card">${
-  resize(width => buildSankeyGraph(filterSankeyByNode(sankeyData), width))
+  resize(width => buildSankeyGraph(sankeyData, width))
 }</div>
 
 <style>
