@@ -16,6 +16,30 @@ toc: false
 
 ---
 
+# Q1.2
+
+```js
+import * as Inputs from "npm:@observablehq/inputs";
+import { StackedSentimentPlot } from "./components/q1/q1.js"
+
+const masterSentimentData = await FileAttachment("./data/ai_sentiment.json").json();
+const options = Object.keys(masterSentimentData);
+const selectedOption = view(Inputs.select(options, {label: "Category 1", value: options[0]}));
+```
+
+```js
+const options2 = Object.keys(masterSentimentData[selectedOption]);
+const selectedOption2 = view(Inputs.select(options2, {label: "Category 2", value: options2[0]}));
+```
+
+<div class="card" style="min-height: 500px;">${
+  resize(width => StackedSentimentPlot(
+    masterSentimentData[selectedOption][selectedOption2], 
+    width, 
+    selectedOption 
+  ))
+}</div>
+
 # Heatmap
 
 ```js
@@ -36,7 +60,7 @@ const { workedOrder, wantOrder } = computeOrders(raw)
 # Sankey Diagram
 ```js
 // Import the select input
-import * as Inputs from "npm:@observablehq/inputs";
+// import * as Inputs from "npm:@observablehq/inputs";
 import { toSankey, buildSankeyGraph, filterSankeyByNode } from "./components/hendrik/sankey.js"
 
 const normalised_data = await FileAttachment("./data/model_usage_normalised.json").json()
