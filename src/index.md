@@ -16,7 +16,7 @@ toc: false
 
 ---
 
-# Q1.2
+# Q1. Stacked Bar Chart
 
 ```js
 import * as Inputs from "npm:@observablehq/inputs";
@@ -24,12 +24,12 @@ import { StackedSentimentPlot } from "./components/q1/q1.js"
 
 const masterSentimentData = await FileAttachment("./data/ai_sentiment.json").json();
 const options = Object.keys(masterSentimentData);
-const selectedOption = view(Inputs.select(options, {label: "Category 1", value: options[0]}));
+const selectedOption = view(Inputs.select(options, {label: "Group by", value: options[0]}));
 ```
 
 ```js
 const options2 = Object.keys(masterSentimentData[selectedOption]);
-const selectedOption2 = view(Inputs.select(options2, {label: "Category 2", value: options2[0]}));
+const selectedOption2 = view(Inputs.select(options2, {label: "Sort by", value: options2[0]}));
 ```
 
 <div class="card" style="min-height: 500px;">${
@@ -38,6 +38,41 @@ const selectedOption2 = view(Inputs.select(options2, {label: "Category 2", value
     width, 
     selectedOption 
   ))
+}</div>
+
+# Q1.2 Waffle Chart
+
+```js
+import { WaffleChart } from "./components/q1/waffle.js"
+
+const masterWaffleSentimentData2 = await FileAttachment("./data/ai_sentiment.json").json();
+const waffleOptions1 = Object.keys(masterWaffleSentimentData2).filter(key => key !== "Language");
+const selectedWaffleOption = view(Inputs.select(waffleOptions1, {label: "Group by", value: waffleOptions1[0]}));
+```
+
+
+<div class="card">${
+  resize(width => WaffleChart(masterWaffleSentimentData2[selectedWaffleOption]["Category"], width, selectedWaffleOption))
+}</div>
+
+# Q1.3 Back-to-Back Bar Chart
+
+```js
+import { DivergingSentimentPlot, DivergingStackedSentimentPlot } from "./components/q1/b2b.js"
+
+const masterDivergingSentimentData = await FileAttachment("./data/ai_sentiment.json").json();
+const DivergingOptions1 = Object.keys(masterDivergingSentimentData);
+const selectedDivergingOption = view(Inputs.select(DivergingOptions1, {label: "Group by", value: DivergingOptions1[0]}));
+```
+
+```js
+const DivergingOptions2 = Object.keys(masterDivergingSentimentData[selectedDivergingOption]);
+const selectedDivergingOption2 = view(Inputs.select(DivergingOptions2, {label: "Sory by", value: options2[0]}));
+```
+
+
+<div class="card" style="min-height: 450px;">${
+  resize(width => DivergingStackedSentimentPlot(masterDivergingSentimentData[selectedDivergingOption][selectedDivergingOption2], width, selectedDivergingOption))
 }</div>
 
 # Heatmap
