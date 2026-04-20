@@ -75,11 +75,13 @@ const selectedDivergingOption2 = view(Inputs.select(DivergingOptions2, {label: "
   resize(width => DivergingStackedSentimentPlot(masterDivergingSentimentData[selectedDivergingOption][selectedDivergingOption2], width, selectedDivergingOption))
 }</div>
 
+# The AI Migration Map: Analyzing Net User Flow Across Model Providers
 
-### The AI Migration Map: Analyzing Net User Flow Across Model Providers
+*Which LLM models for AI tools have you used for
+development work in the past year, and which would you
+like to use next year? Select all that apply.*
+
 This flow diagram visualizes the net migration preferences among users of major AI model providers. Each connection represents the net difference in switching interest between two companies, calculated as the percentage of users of one company willing to switch to the other minus the percentage of users in the opposite direction. OpenAI emerges as the strongest attractor across the ecosystem, drawing interest from 13-27% of users at competing platforms, with particularly high appeal among X (26.6%), Perplexity (25.3%), and Meta (23.8%) users. Google maintains the second-strongest pull, attracting 6-14% of users from other providers. The data reveals a clear hierarchy of perceived desirability, with more established players like OpenAI and Google drawing significantly more interest than they lose, while newer or smaller providers like Reka, Cohere, and Alibaba show substantial outflows toward the market leaders. Notably, some transitions show near-zero or even slightly negative flows—such as DeepSeek to Anthropic (-0.17%)—suggesting strong satisfaction or loyalty among certain user bases. The pattern indicates a market where users actively consider alternatives, with switching interest concentrated toward a few dominant platforms rather than distributed evenly across competitors.
-
-# Difference Heatmap
 
 ```js
 import { DifferenceHeatmap } from "./components/hendrik/difference_heatmap.js"
