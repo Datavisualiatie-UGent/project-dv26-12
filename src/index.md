@@ -136,6 +136,10 @@ const setSelectedAges = (v) => { selectedAges.value = v; };
 ```js
 const filteredData = aiRadarData.filter(d => selectedAges.includes(d.Age));
 ```
+The following Radar Chart tells us something about which tasks AI is used for between different age-demographics. On average, we can see that the main usage of AI is 'Search for answers', with nearly 15% of all AI-users using AI for this purpose. This tells us that AI is mostly used as a glorified search engine. 
+Another interesting insight follows when comparing the younger generation (18-24) to the old guard (65+). The most notable difference here are for the tasks: 'Writing code', 'Creating or maintaining documentation', 'Generating content orsynthetic data
+
+
 
 <div class="card" style="min-height: 600px; display: flex; align-items: flex-start; gap: 1rem;">
   <div style="flex: 1;">
