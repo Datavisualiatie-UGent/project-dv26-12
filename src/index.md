@@ -112,7 +112,7 @@ const normalised_data = await FileAttachment("./data/model_usage_normalised.json
   resize(width => DifferenceHeatmap(normalised_data, width))
 }</div>
 
-# Radar Chart
+## Which parts of your development workflow are you currently integrating into AI or using AI tools to accomplish or plan to use AI to accomplish over the next 3 - 5 years?
 
 ```js
 // Load the raw data
