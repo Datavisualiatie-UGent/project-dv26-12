@@ -16,8 +16,18 @@ toc: false
 
 ---
 
-# Q1. Stacked Bar Chart
+# AI sentiment
+In an ever-increasing use and presence of AI in the programming landscape, we show how different ages, backgrounds, and working environments impact the sentiment towards the use of AI.
 
+Below we show grouped distributions of answers from programmers when asked the question:
+*How favorable is your stance on using AI tools as part of your development workflow?*
+
+Depending on how the answers are grouped, we get some interesting results.
+It is clear that amongst young developers the AI sentiment answers are more opinionated compared to older developers, where we see more uncertainty in the answers.
+
+When looking at profession, it is clear that hobbyists are remarkably less favorable of the use of AI in the development workflow.
+
+When looking at employment, we again see higher uncertainty in the answers for retired developers.
 ```js
 import * as Inputs from "npm:@observablehq/inputs";
 import { StackedSentimentPlot } from "./components/q1/q1.js"
@@ -28,7 +38,7 @@ const selectedOption = view(Inputs.select(options, {label: "Group by", value: op
 ```
 
 ```js
-const options2 = Object.keys(masterSentimentData[selectedOption]);
+const options2 = ["Category", "Favorable", "Unfavorable"]
 const selectedOption2 = view(Inputs.select(options2, {label: "Sort by", value: options2[0]}));
 ```
 
@@ -39,8 +49,37 @@ const selectedOption2 = view(Inputs.select(options2, {label: "Sort by", value: o
     selectedOption 
   ))
 }</div>
+When we rescale the answers to exclude uncertainty, we get the opinionated distribution of the answers.
 
-# Q1.2 Waffle Chart
+When we group the answers by dominant programming language used, we see that a lot of the higher AI sentiment is present with the higher-level programming languages (Dart, Swift, TypeScript) and lower sentiment for the lower-level systems programming languages (Assembly, Rust, C, C++).
+
+Again for hobbiest we see that we have an almost 50/50 split in sentiment when we look at the opionated results.
+```js
+import { DivergingSentimentPlot, DivergingStackedSentimentPlot, PolarizedDivergingPlot, RescaledDivergingPlot} from "./components/q1/b2b.js"
+
+const masterDivergingSentimentData = await FileAttachment("./data/ai_sentiment1.json").json();
+const DivergingOptions1 = Object.keys(masterDivergingSentimentData);
+const selectedDivergingOption = view(Inputs.select(DivergingOptions1, {label: "Group by", value: DivergingOptions1[0]}));
+```
+
+```js
+const DivergingOptions2 = ["PolarizedFour", "PolarizedFourFavorable", "PolarizedFourUnfavorable"]
+const selectedDivergingOption2 = view(Inputs.select(DivergingOptions2, {label: "Sort by", value: options2[0]}));
+```
+
+<div class="card" style="min-height: 450px;">${
+  resize(width => RescaledDivergingPlot(masterDivergingSentimentData[selectedDivergingOption][selectedDivergingOption2], width, selectedDivergingOption))
+}</div>
+
+<!-- <div class="card" style="min-height: 450px;">${
+  resize(width => DivergingStackedSentimentPlot(masterDivergingSentimentData[selectedDivergingOption][selectedDivergingOption2], width, selectedDivergingOption))
+}</div> -->
+
+<!-- <div class="card" style="min-height: 450px;">${
+  resize(width => PolarizedDivergingPlot(masterDivergingSentimentData[selectedDivergingOption][selectedDivergingOption2], width, selectedDivergingOption))
+}</div> -->
+
+<!-- # Q1.2 Waffle Chart
 
 ```js
 import { WaffleChart } from "./components/q1/waffle.js"
@@ -53,27 +92,8 @@ const selectedWaffleOption = view(Inputs.select(waffleOptions1, {label: "Group b
 
 <div class="card">${
   resize(width => WaffleChart(masterWaffleSentimentData2[selectedWaffleOption]["Category"], width, selectedWaffleOption))
-}</div>
+}</div> -->
 
-# Q1.3 Back-to-Back Bar Chart
-
-```js
-import { DivergingSentimentPlot, DivergingStackedSentimentPlot } from "./components/q1/b2b.js"
-
-const masterDivergingSentimentData = await FileAttachment("./data/ai_sentiment.json").json();
-const DivergingOptions1 = Object.keys(masterDivergingSentimentData);
-const selectedDivergingOption = view(Inputs.select(DivergingOptions1, {label: "Group by", value: DivergingOptions1[0]}));
-```
-
-```js
-const DivergingOptions2 = Object.keys(masterDivergingSentimentData[selectedDivergingOption]);
-const selectedDivergingOption2 = view(Inputs.select(DivergingOptions2, {label: "Sory by", value: options2[0]}));
-```
-
-
-<div class="card" style="min-height: 450px;">${
-  resize(width => DivergingStackedSentimentPlot(masterDivergingSentimentData[selectedDivergingOption][selectedDivergingOption2], width, selectedDivergingOption))
-}</div>
 
 # The AI Migration Map: Analyzing Net User Flow Across Model Providers
 
