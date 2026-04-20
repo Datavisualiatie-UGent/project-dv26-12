@@ -1,5 +1,5 @@
-import * as d3 from "npm:d3";
 import * as Plot from "npm:@observablehq/plot";
+import * as d3 from "npm:d3";
 
 export function buildDifferenceMatrix(data) {
   const names = Array.from(
@@ -78,6 +78,7 @@ export function DifferenceHeatmap(data, width = 900) {
             x: "want",
             y: "worked",
             fill: "value",
+            tip: true,
             title: d => {
                     const v = d.value * 100;
                     const abs = Math.abs(v);
