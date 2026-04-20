@@ -73,8 +73,6 @@ export function DifferenceHeatmap(data, width = 900) {
   const { diff, names } = buildDifferenceMatrix(data);
   const flat = matrixToFlat(diff, names);
 
-  console.log(matrixToLowerFlat(diff, names));
-
   const maxAbs = d3.max(flat, d => Math.abs(d.value));
 
   return Plot.plot({
