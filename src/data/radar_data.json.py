@@ -35,6 +35,16 @@ grouped['normalized_score'] = (grouped['weight'] / age_totals) * 100
 
 grouped = grouped.sort_values(by=['Age', 'task'])
 
-# Output to Observable
+
+# Compute "All" category: average normalized_score per task across all age groups
+all_avg = grouped.groupby('task')['normalized_score'].mean().reset_index()
+all_avg['Age'] = 'All'
+all_avg = all_avg[['Age', 'task', 'normalized_score']]
+
+# Append "All" to the grouped data
+grouped = pd.concat([grouped, all_avg], ignore_index=True)
+grouped = grouped.sort_values(by=['Age', 'task'])
+
 output = grouped[['Age', 'task', 'normalized_score']].to_dict(orient='records')
+
 json.dump(output, sys.stdout)
