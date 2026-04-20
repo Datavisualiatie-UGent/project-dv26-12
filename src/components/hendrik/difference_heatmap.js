@@ -51,9 +51,29 @@ function matrixToFlat(diff, names) {
   return out;
 }
 
+/* function matrixToLowerFlat(diff, names) {
+  const out = [];
+
+  for (let i = 0; i < names.length; i++) {
+    for (let j = 0; j < i; j++) {
+      if (i === j) continue;
+
+      out.push({
+        worked: names[i],
+        want: names[j],
+        value: diff[i][j]
+      });
+    }
+  }
+
+  return out;
+} */
+
 export function DifferenceHeatmap(data, width = 900) {
   const { diff, names } = buildDifferenceMatrix(data);
   const flat = matrixToFlat(diff, names);
+
+  console.log(matrixToLowerFlat(diff, names));
 
   const maxAbs = d3.max(flat, d => Math.abs(d.value));
 

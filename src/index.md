@@ -75,57 +75,19 @@ const selectedDivergingOption2 = view(Inputs.select(DivergingOptions2, {label: "
   resize(width => DivergingStackedSentimentPlot(masterDivergingSentimentData[selectedDivergingOption][selectedDivergingOption2], width, selectedDivergingOption))
 }</div>
 
-# Heatmap
-
-```js
-import { computeOrders, Heatmap } from "./components/hendrik/heatmap.js"
-import { normalizeByWorked } from "./components/utils.js"
-
-const raw = await FileAttachment("./data/heatmap.json").json()
-const data = normalizeByWorked(raw)
-const dataNoSelf = data.filter(d => d.worked !== d.want);
-
-const { workedOrder, wantOrder } = computeOrders(raw)
-```
-
-<div class="card">${
-  resize(width => Heatmap(data, workedOrder, wantOrder, width))
-}</div>
-
-# Sankey Diagram
-```js
-// Import the select input
-// import * as Inputs from "npm:@observablehq/inputs";
-import { toSankey, buildSankeyGraph, filterSankeyByNode } from "./components/hendrik/sankey.js"
-
-const normalised_data = await FileAttachment("./data/model_usage_normalised.json").json()
-
-const companies = Array.from(new Set(normalised_data.map(d => d.worked))).sort();
-```
-
-```js
-const companyInput = Inputs.select(companies, {label: "Select", value: "OpenAI"});
-const selectedCompany = view(companyInput);
-```
-
-```js
-const sankeyData = toSankey(normalised_data, selectedCompany);
-```
-
-<div class="card" style="min-height: 500px;">${
-  resize(width => buildSankeyGraph(sankeyData, width))
-}</div>
-
 # Difference Heatmap
 
 ```js
 import { DifferenceHeatmap } from "./components/hendrik/difference_heatmap.js"
+const normalised_data = await FileAttachment("./data/model_usage_normalised.json").json()
 ```
 
 <div class="card" style="min-height: 500px;">${
   resize(width => DifferenceHeatmap(normalised_data, width))
 }</div>
 
+### The AI Migration Map: Analyzing Net User Flow Across Model Providers
+This flow diagram visualizes the net migration preferences among users of major AI model providers. Each connection represents the percentage of users currently working with one company who express willingness to switch to another. OpenAI emerges as the strongest attractor across the ecosystem, drawing interest from 13-27% of users at competing platforms, with particularly high appeal among X (26.6%), Perplexity (25.3%), and Meta (23.8%) users. Google maintains the second-strongest pull, attracting 6-14% of users from other providers. The data reveals a clear hierarchy of perceived desirability, with more established players like OpenAI and Google drawing significantly more interest than they lose, while newer or smaller providers like Reka, Cohere, and Alibaba show substantial outflows toward the market leaders. Notably, some transitions show near-zero or even slightly negative flows—such as DeepSeek to Anthropic (-0.17%)—suggesting strong satisfaction or loyalty among certain user bases. The pattern indicates a market where users actively consider alternatives, with switching interest concentrated toward a few dominant platforms rather than distributed evenly across competitors.
 
 # Radar Chart
 ```js
