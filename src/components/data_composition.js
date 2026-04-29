@@ -11,8 +11,8 @@ export function CompositionBarChart(items, width, { title } = {}) {
   return Plot.plot({
     width,
     height,
-    marginBottom: 110,
-    marginLeft: 60,
+    marginBottom: 140,
+    marginLeft: 70,
     style: { display: "block" },
     title,
     x: {

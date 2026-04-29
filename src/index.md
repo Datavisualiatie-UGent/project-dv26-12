@@ -33,7 +33,7 @@ const selectedComposition = view(
 );
 ```
 
-<div class="card" style="min-height: 520px;">${
+<div class="card">${
   resize((width) =>
     CompositionBarChart(compositionData[selectedComposition].items, width, {
       title: compositionData[selectedComposition].label
