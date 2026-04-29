@@ -121,12 +121,6 @@ export function StackedSentimentPlot(data, width, categoryKey = "AgeGroup") {
     tooltip.innerHTML = `
       <div style="font-size:13px;color:#94a3b8;margin-bottom:6px;letter-spacing:.04em;text-transform:uppercase">Sentiment</div>
       <div style="font-size:16px;font-weight:700;margin-bottom:8px;color:#fff">${category}</div>
-      ${hoveredSentiment ? `
-        <div style="margin-bottom:8px">
-          <span style="color:${colorMap[hoveredSentiment]}">■</span>
-          <strong style="color:${colorMap[hoveredSentiment]}">${hoveredSentiment}</strong>:
-          <strong>${Number(row[hoveredSentiment]).toFixed(1)}%</strong>
-        </div>` : ""}
       <div style="border-top:1px solid rgba(255,255,255,.1);padding-top:8px">
         ${sentimentOrder.map(s => {
           const isActive = !hoveredSentiment || s === hoveredSentiment;
