@@ -3,7 +3,10 @@ import json
 import sys
 
 # Load the data
-df = pd.read_csv("resources/stack-overflow-developer-survey-2025/survey_results_public.csv", low_memory=False)
+df = pd.read_csv(
+    "src/data/stack-overflow-developer-survey-2025/survey_results_public.csv",
+    low_memory=False,
+)
 
 def process_ai_sentiment_by_column(df, col, mapping_col, expected_order=None, mapping=None, ai_sent_col='AISent'):
     # Setup and Clean Data
