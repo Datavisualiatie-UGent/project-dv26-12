@@ -36,10 +36,32 @@ export function StackedSentimentPlot(data, width, categoryKey = "AgeGroup") {
         fill: "sentiment",
         insetLeft: 1,
         insetRight: 1,
-        // tip: true removed — replaced by custom tooltip
       }),
     ],
   });
+
+  // --- Tag every bar rect with its sentiment via data attribute ---
+  // Plot renders bars in tidyData order inside the [aria-label="bar"] group
+  const barGroup = plot.querySelector("[aria-label='bar']");
+  const barRects = barGroup ? Array.from(barGroup.querySelectorAll("rect")) : [];
+
+  barRects.forEach((rect, i) => {
+    const sentiment = tidyData[i]?.sentiment;
+    if (sentiment) {
+      rect.dataset.sentiment = sentiment;
+      rect.style.transition = "opacity 0.15s ease";
+    }
+  });
+
+  function focusSentiment(hoveredSentiment) {
+    barRects.forEach(rect => {
+      rect.style.opacity = rect.dataset.sentiment === hoveredSentiment ? "1" : "0.15";
+    });
+  }
+
+  function clearFocus() {
+    barRects.forEach(rect => { rect.style.opacity = "1"; });
+  }
 
   // --- Tooltip element ---
   const tooltip = document.createElement("div");
@@ -67,6 +89,7 @@ export function StackedSentimentPlot(data, width, categoryKey = "AgeGroup") {
     const rect = plot.getBoundingClientRect();
     const py   = event.clientY - rect.top;
 
+    // --- Which row? ---
     const yScale    = plot.scale("y");
     const yMin      = Math.min(...yScale.range);
     const bandwidth = Math.abs(yScale.range[1] - yScale.range[0]) / yScale.domain.length;
@@ -74,28 +97,43 @@ export function StackedSentimentPlot(data, width, categoryKey = "AgeGroup") {
 
     if (yIdx < 0 || yIdx >= yScale.domain.length) {
       tooltip.style.display = "none";
+      clearFocus();
       return;
     }
 
     const category = yScale.domain[yIdx];
     const row      = data.find(d => d[categoryKey] === category);
-    if (!row) { tooltip.style.display = "none"; return; }
+    if (!row) { tooltip.style.display = "none"; clearFocus(); return; }
 
-    const swatch = s => `<span style="color:${colorMap[s]}">■</span>`;
+    // --- Which segment? Use elementFromPoint to get the exact rect under cursor ---
+    const target           = document.elementFromPoint(event.clientX, event.clientY);
+    const hoveredSentiment = target?.dataset?.sentiment ?? null;
 
+    hoveredSentiment ? focusSentiment(hoveredSentiment) : clearFocus();
+
+    // --- Tooltip content ---
     const favTotal   = (Number(row["Very favorable"]) + Number(row["Favorable"])).toFixed(1);
     const unfavTotal = (Number(row["Very unfavorable"]) + Number(row["Unfavorable"])).toFixed(1);
     const net        = (parseFloat(favTotal) - parseFloat(unfavTotal)).toFixed(1);
-    const netColor   = net >= 0 ? "#1a9850" : "#d73027";
-    const netSign    = net >= 0 ? "+" : "";
+    const netColor   = parseFloat(net) >= 0 ? "#1a9850" : "#d73027";
+    const netSign    = parseFloat(net) >= 0 ? "+" : "";
 
     tooltip.innerHTML = `
       <div style="font-size:13px;color:#94a3b8;margin-bottom:6px;letter-spacing:.04em;text-transform:uppercase">Sentiment</div>
       <div style="font-size:16px;font-weight:700;margin-bottom:8px;color:#fff">${category}</div>
+      ${hoveredSentiment ? `
+        <div style="margin-bottom:8px">
+          <span style="color:${colorMap[hoveredSentiment]}">■</span>
+          <strong style="color:${colorMap[hoveredSentiment]}">${hoveredSentiment}</strong>:
+          <strong>${Number(row[hoveredSentiment]).toFixed(1)}%</strong>
+        </div>` : ""}
       <div style="border-top:1px solid rgba(255,255,255,.1);padding-top:8px">
-        ${sentimentOrder.map(s =>
-          `${swatch(s)} ${s}: <strong>${Number(row[s]).toFixed(1)}%</strong>`
-        ).join("<br>")}
+        ${sentimentOrder.map(s => {
+          const isActive = !hoveredSentiment || s === hoveredSentiment;
+          return `<div style="opacity:${isActive ? 1 : 0.3}">
+            <span style="color:${colorMap[s]}">■</span> ${s}: <strong>${Number(row[s]).toFixed(1)}%</strong>
+          </div>`;
+        }).join("")}
         <div style="border-top:1px solid rgba(255,255,255,.08);margin-top:8px;padding-top:8px;font-size:13px">
           Fav total: <strong style="color:#1a9850">${favTotal}%</strong> &nbsp;
           Unfav total: <strong style="color:#d73027">${unfavTotal}%</strong><br>
@@ -104,8 +142,7 @@ export function StackedSentimentPlot(data, width, categoryKey = "AgeGroup") {
       </div>`;
 
     tooltip.style.display = "block";
-
-    const tw = 280, th = 160;
+    const tw = 280, th = 200;
     const vw = window.innerWidth, vh = window.innerHeight;
     tooltip.style.left = Math.min(event.clientX + 16, vw - tw - 8) + "px";
     tooltip.style.top  = Math.min(event.clientY + 16, vh - th - 8) + "px";
@@ -113,6 +150,7 @@ export function StackedSentimentPlot(data, width, categoryKey = "AgeGroup") {
 
   plot.addEventListener("pointerleave", () => {
     tooltip.style.display = "none";
+    clearFocus();
   });
 
   return plot;
