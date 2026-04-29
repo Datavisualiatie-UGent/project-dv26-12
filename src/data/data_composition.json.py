@@ -1,10 +1,8 @@
+import pandas as pd
 import json
 import sys
 from collections import Counter
 from typing import Iterable
-
-import pandas as pd
-
 
 SURVEY_CSV_PATH = (
     "src/data/stack-overflow-developer-survey-2025/survey_results_public.csv"
