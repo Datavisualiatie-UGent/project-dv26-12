@@ -1,5 +1,7 @@
 import * as Plot from "npm:@observablehq/plot";
 
+// ─── Shared helpers ───────────────────────────────────────────────────────────
+
 function createTooltip() {
   const tooltip = document.createElement("div");
   Object.assign(tooltip.style, {
@@ -25,47 +27,76 @@ function createTooltip() {
 }
 
 function positionTooltip(tooltip, event) {
-  const tw = 280, th = 120;
+  const tw = 280, th = 160;
   const vw = window.innerWidth, vh = window.innerHeight;
   tooltip.style.left = Math.min(event.clientX + 16, vw - tw - 8) + "px";
   tooltip.style.top  = Math.min(event.clientY + 16, vh - th - 8) + "px";
 }
 
-function attachHitDetection(plot, data, categoryKey, tooltip, onHit) {
+// Tag every rect in the bar group with its sentiment, enable opacity transition
+function tagBarRects(plot, tidyData) {
+  const barGroup = plot.querySelector("[aria-label='bar']");
+  const barRects = barGroup ? Array.from(barGroup.querySelectorAll("rect")) : [];
+  barRects.forEach((rect, i) => {
+    const sentiment = tidyData[i]?.sentiment;
+    if (sentiment) {
+      rect.dataset.sentiment = sentiment;
+      rect.style.transition = "opacity 0.15s ease";
+    }
+  });
+  return barRects;
+}
+
+function focusSentiment(barRects, hoveredSentiment) {
+  barRects.forEach(rect => {
+    rect.style.opacity = rect.dataset.sentiment === hoveredSentiment ? "1" : "0.15";
+  });
+}
+
+function clearFocus(barRects) {
+  barRects.forEach(rect => { rect.style.opacity = "1"; });
+}
+
+function attachHitDetection(plot, data, categoryKey, barRects, tooltip, onHit) {
   plot.addEventListener("pointermove", (event) => {
     const rect   = plot.getBoundingClientRect();
-    const px     = event.clientX - rect.left;
     const py     = event.clientY - rect.top;
 
-    const xScale = plot.scale("x");
-    const yScale = plot.scale("y");
-
-    const yRange    = yScale.range;
-    const yMin      = Math.min(...yRange);
-    const bandwidth = Math.abs(yRange[1] - yRange[0]) / yScale.domain.length;
+    const yScale    = plot.scale("y");
+    const yMin      = Math.min(...yScale.range);
+    const bandwidth = Math.abs(yScale.range[1] - yScale.range[0]) / yScale.domain.length;
     const yIdx      = Math.floor((py - yMin) / bandwidth) - 1;
 
     if (yIdx < 0 || yIdx >= yScale.domain.length) {
       tooltip.style.display = "none";
+      clearFocus(barRects);
       return;
     }
 
     const category = yScale.domain[yIdx];
     const row      = data.find(d => d[categoryKey] === category);
+    if (!row) { tooltip.style.display = "none"; clearFocus(barRects); return; }
 
-    if (!row) { tooltip.style.display = "none"; return; }
+    // Which segment is directly under the cursor?
+    const target           = document.elementFromPoint(event.clientX, event.clientY);
+    const hoveredSentiment = target?.dataset?.sentiment ?? null;
 
-    onHit(row, category, px, xScale, tooltip, event);
+    hoveredSentiment ? focusSentiment(barRects, hoveredSentiment) : clearFocus(barRects);
+
+    onHit(row, category, hoveredSentiment, tooltip, event);
   });
 
   plot.addEventListener("pointerleave", () => {
     tooltip.style.display = "none";
+    clearFocus(barRects);
   });
 }
 
 // ─── 1. DivergingSentimentPlot ────────────────────────────────────────────────
 
 export function DivergingSentimentPlot(data, width, categoryKey = "AgeGroup") {
+  const colorMap = { "Favorable": "#28a05c", "Unfavorable": "#e63c33" };
+
   const divergingData = data.flatMap(d => {
     const favorableSum   = Number(d["Very favorable"]) + Number(d["Favorable"]);
     const unfavorableSum = Number(d["Very unfavorable"]) + Number(d["Unfavorable"]);
@@ -85,29 +116,36 @@ export function DivergingSentimentPlot(data, width, categoryKey = "AgeGroup") {
     color: { domain: ["Favorable", "Unfavorable"], range: ["#28a05c", "#e63c33"], legend: true },
     marks: [
       Plot.ruleX([0], { strokeWidth: 2 }),
-      Plot.barX(divergingData, {
-        x: "value", y: categoryKey, fill: "sentiment",
-        insetTop: 2, insetBottom: 2,
-      }),
+      Plot.barX(divergingData, { x: "value", y: categoryKey, fill: "sentiment", insetTop: 2, insetBottom: 2 }),
     ],
   });
 
-  const tooltip = createTooltip();
+  const barRects = tagBarRects(plot, divergingData);
+  const tooltip  = createTooltip();
 
-  attachHitDetection(plot, data, categoryKey, tooltip, (row, category, _px, _xScale, tt, event) => {
+  attachHitDetection(plot, data, categoryKey, barRects, tooltip, (row, category, hoveredSentiment, tt, event) => {
     const fav   = Number(row["Very favorable"]) + Number(row["Favorable"]);
     const unfav = Number(row["Very unfavorable"]) + Number(row["Unfavorable"]);
     const net   = fav - unfav;
     const sign  = net >= 0 ? "+" : "−";
     const color = net >= 0 ? "#28a05c" : "#e63c33";
 
+    const row_ = (s, val) => {
+      const active = !hoveredSentiment || hoveredSentiment === s;
+      return `<div style="opacity:${active ? 1 : 0.3}">
+        <span style="color:${colorMap[s]}">■</span> ${s}: <strong>${val.toFixed(1)}%</strong>
+      </div>`;
+    };
+
     tt.innerHTML = `
       <div style="font-size:13px;color:#94a3b8;margin-bottom:6px;letter-spacing:.04em;text-transform:uppercase">Sentiment</div>
       <div style="font-size:16px;font-weight:700;margin-bottom:8px;color:#fff">${category}</div>
       <div style="border-top:1px solid rgba(255,255,255,.1);padding-top:8px">
-        <span style="color:#28a05c">■</span> Favorable: <strong>${fav.toFixed(1)}%</strong><br>
-        <span style="color:#e63c33">■</span> Unfavorable: <strong>${unfav.toFixed(1)}%</strong><br>
-        Net: <strong style="color:${color}">${sign}${Math.abs(net).toFixed(1)}%</strong>
+        ${row_("Favorable", fav)}
+        ${row_("Unfavorable", unfav)}
+        <div style="border-top:1px solid rgba(255,255,255,.08);margin-top:8px;padding-top:8px;font-size:13px">
+          Net: <strong style="color:${color}">${sign}${Math.abs(net).toFixed(1)}%</strong>
+        </div>
       </div>`;
     tt.style.display = "block";
     positionTooltip(tt, event);
@@ -120,8 +158,8 @@ export function DivergingSentimentPlot(data, width, categoryKey = "AgeGroup") {
 
 export function DivergingStackedSentimentPlot(data, width, categoryKey = "AgeGroup") {
   const sentimentOrder = ["Unfavorable", "Very unfavorable", "Favorable", "Very favorable"];
-  const colorRange = ["#fc8d59", "#d73027", "#91cf60", "#1a9850"];
-  const colorMap = Object.fromEntries(sentimentOrder.map((s, i) => [s, colorRange[i]]));
+  const colorRange     = ["#fc8d59", "#d73027", "#91cf60", "#1a9850"];
+  const colorMap       = Object.fromEntries(sentimentOrder.map((s, i) => [s, colorRange[i]]));
 
   const divergingData = data.flatMap(d => {
     const favTotal   = Number(d["Very favorable"]) + Number(d["Favorable"]);
@@ -148,9 +186,10 @@ export function DivergingStackedSentimentPlot(data, width, categoryKey = "AgeGro
     ],
   });
 
-  const tooltip = createTooltip();
+  const barRects = tagBarRects(plot, divergingData);
+  const tooltip  = createTooltip();
 
-  attachHitDetection(plot, data, categoryKey, tooltip, (row, category, _px, _xScale, tt, event) => {
+  attachHitDetection(plot, data, categoryKey, barRects, tooltip, (row, category, hoveredSentiment, tt, event) => {
     const vf    = Number(row["Very favorable"]);
     const f     = Number(row["Favorable"]);
     const u     = Number(row["Unfavorable"]);
@@ -161,21 +200,26 @@ export function DivergingStackedSentimentPlot(data, width, categoryKey = "AgeGro
     const sign  = net >= 0 ? "+" : "−";
     const color = net >= 0 ? "#1a9850" : "#d73027";
 
-    const swatch = s => `<span style="color:${colorMap[s]}">■</span>`;
+    const row_ = (s, val) => {
+      const active = !hoveredSentiment || hoveredSentiment === s;
+      return `<div style="opacity:${active ? 1 : 0.3}">
+        <span style="color:${colorMap[s]}">■</span> ${s}: <strong>${val.toFixed(1)}%</strong>
+      </div>`;
+    };
 
     tt.innerHTML = `
       <div style="font-size:13px;color:#94a3b8;margin-bottom:6px;letter-spacing:.04em;text-transform:uppercase">Sentiment breakdown</div>
       <div style="font-size:16px;font-weight:700;margin-bottom:8px;color:#fff">${category}</div>
       <div style="border-top:1px solid rgba(255,255,255,.1);padding-top:8px">
-        ${swatch("Very favorable")} Very favorable: <strong>${vf.toFixed(1)}%</strong><br>
-        ${swatch("Favorable")} Favorable: <strong>${f.toFixed(1)}%</strong><br>
-        ${swatch("Unfavorable")} Unfavorable: <strong>${u.toFixed(1)}%</strong><br>
-        ${swatch("Very unfavorable")} Very unfavorable: <strong>${vu.toFixed(1)}%</strong><br>
-        <span style="font-size:13px;margin-top:6px;display:inline-block">
+        ${row_("Very favorable", vf)}
+        ${row_("Favorable", f)}
+        ${row_("Unfavorable", u)}
+        ${row_("Very unfavorable", vu)}
+        <div style="border-top:1px solid rgba(255,255,255,.08);margin-top:8px;padding-top:8px;font-size:13px">
           Fav total: <strong style="color:#1a9850">${fav.toFixed(1)}%</strong> &nbsp;
           Unfav total: <strong style="color:#d73027">${unfav.toFixed(1)}%</strong><br>
           Net: <strong style="color:${color}">${sign}${Math.abs(net).toFixed(1)}%</strong>
-        </span>
+        </div>
       </div>`;
     tt.style.display = "block";
     positionTooltip(tt, event);
@@ -189,6 +233,7 @@ export function DivergingStackedSentimentPlot(data, width, categoryKey = "AgeGro
 export function PolarizedDivergingPlot(data, width, categoryKey = "AgeGroup") {
   const sentimentOrder = ["Unfavorable (Rescaled %)", "Favorable (Rescaled %)"];
   const colorRange     = ["#ea5f40", "#56b458"];
+  const colorMap       = Object.fromEntries(sentimentOrder.map((s, i) => [s, colorRange[i]]));
 
   const divergingData = data.flatMap(d => [
     { [categoryKey]: d[categoryKey], sentiment: "Favorable (Rescaled %)",   value:  Number(d["Favorable (Rescaled %)"]) },
@@ -209,22 +254,32 @@ export function PolarizedDivergingPlot(data, width, categoryKey = "AgeGroup") {
     ],
   });
 
-  const tooltip = createTooltip();
+  const barRects = tagBarRects(plot, divergingData);
+  const tooltip  = createTooltip();
 
-  attachHitDetection(plot, data, categoryKey, tooltip, (row, category, _px, _xScale, tt, event) => {
+  attachHitDetection(plot, data, categoryKey, barRects, tooltip, (row, category, hoveredSentiment, tt, event) => {
     const fav   = Number(row["Favorable (Rescaled %)"]);
     const unfav = Number(row["Unfavorable (Rescaled %)"]);
     const net   = fav - unfav;
     const sign  = net >= 0 ? "+" : "−";
     const color = net >= 0 ? "#56b458" : "#ea5f40";
 
+    const row_ = (s, val) => {
+      const active = !hoveredSentiment || hoveredSentiment === s;
+      return `<div style="opacity:${active ? 1 : 0.3}">
+        <span style="color:${colorMap[s]}">■</span> ${s}: <strong>${val.toFixed(1)}%</strong>
+      </div>`;
+    };
+
     tt.innerHTML = `
       <div style="font-size:13px;color:#94a3b8;margin-bottom:6px;letter-spacing:.04em;text-transform:uppercase">Polarized sentiment</div>
       <div style="font-size:16px;font-weight:700;margin-bottom:8px;color:#fff">${category}</div>
       <div style="border-top:1px solid rgba(255,255,255,.1);padding-top:8px">
-        <span style="color:#56b458">■</span> Favorable (rescaled): <strong>${fav.toFixed(1)}%</strong><br>
-        <span style="color:#ea5f40">■</span> Unfavorable (rescaled): <strong>${unfav.toFixed(1)}%</strong><br>
-        Net: <strong style="color:${color}">${sign}${Math.abs(net).toFixed(1)}%</strong>
+        ${row_("Favorable (Rescaled %)", fav)}
+        ${row_("Unfavorable (Rescaled %)", unfav)}
+        <div style="border-top:1px solid rgba(255,255,255,.08);margin-top:8px;padding-top:8px;font-size:13px">
+          Net: <strong style="color:${color}">${sign}${Math.abs(net).toFixed(1)}%</strong>
+        </div>
       </div>`;
     tt.style.display = "block";
     positionTooltip(tt, event);
@@ -266,9 +321,10 @@ export function RescaledDivergingPlot(data, width, categoryKey = "AgeGroup") {
     ],
   });
 
-  const tooltip = createTooltip();
+  const barRects = tagBarRects(plot, divergingData);
+  const tooltip  = createTooltip();
 
-  attachHitDetection(plot, data, categoryKey, tooltip, (row, category, _px, _xScale, tt, event) => {
+  attachHitDetection(plot, data, categoryKey, barRects, tooltip, (row, category, hoveredSentiment, tt, event) => {
     const vf    = Number(row["Very favorable (Rescaled %)"]);
     const f     = Number(row["Favorable (Rescaled %)"]);
     const u     = Number(row["Unfavorable (Rescaled %)"]);
@@ -279,21 +335,26 @@ export function RescaledDivergingPlot(data, width, categoryKey = "AgeGroup") {
     const sign  = net >= 0 ? "+" : "−";
     const color = net >= 0 ? "#1a9850" : "#d73027";
 
-    const swatch = s => `<span style="color:${colorMap[s]}">■</span>`;
+    const row_ = (s, val) => {
+      const active = !hoveredSentiment || hoveredSentiment === s;
+      return `<div style="opacity:${active ? 1 : 0.3}">
+        <span style="color:${colorMap[s]}">■</span> ${s}: <strong>${val.toFixed(1)}%</strong>
+      </div>`;
+    };
 
     tt.innerHTML = `
       <div style="font-size:13px;color:#94a3b8;margin-bottom:6px;letter-spacing:.04em;text-transform:uppercase">Rescaled sentiment</div>
       <div style="font-size:16px;font-weight:700;margin-bottom:8px;color:#fff">${category}</div>
       <div style="border-top:1px solid rgba(255,255,255,.1);padding-top:8px">
-        ${swatch("Very favorable (Rescaled %)")} Very favorable: <strong>${vf.toFixed(1)}%</strong><br>
-        ${swatch("Favorable (Rescaled %)")} Favorable: <strong>${f.toFixed(1)}%</strong><br>
-        ${swatch("Unfavorable (Rescaled %)")} Unfavorable: <strong>${u.toFixed(1)}%</strong><br>
-        ${swatch("Very unfavorable (Rescaled %)")} Very unfavorable: <strong>${vu.toFixed(1)}%</strong><br>
-        <span style="font-size:13px;margin-top:6px;display:inline-block">
+        ${row_("Very favorable (Rescaled %)", vf)}
+        ${row_("Favorable (Rescaled %)", f)}
+        ${row_("Unfavorable (Rescaled %)", u)}
+        ${row_("Very unfavorable (Rescaled %)", vu)}
+        <div style="border-top:1px solid rgba(255,255,255,.08);margin-top:8px;padding-top:8px;font-size:13px">
           Fav total: <strong style="color:#1a9850">${fav.toFixed(1)}%</strong> &nbsp;
           Unfav total: <strong style="color:#d73027">${unfav.toFixed(1)}%</strong><br>
           Net: <strong style="color:${color}">${sign}${Math.abs(net).toFixed(1)}%</strong>
-        </span>
+        </div>
       </div>`;
     tt.style.display = "block";
     positionTooltip(tt, event);
