@@ -11,7 +11,7 @@ export function CompositionBarChart(items, width, { title } = {}) {
   return Plot.plot({
     width,
     height,
-    marginBottom: 140,
+    marginBottom: 80,
     marginLeft: 70,
     style: { display: "block" },
     title,
@@ -24,6 +24,7 @@ export function CompositionBarChart(items, width, { title } = {}) {
     },
     marks: [
       Plot.ruleY([0]),
+      Plot.gridY({ stroke: "#9aa0a6", strokeOpacity: 0.35, strokeDasharray: "2,4" }),
       Plot.barY(data, {
         x: "category",
         y: "count",
