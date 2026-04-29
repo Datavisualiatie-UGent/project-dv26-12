@@ -16,6 +16,28 @@ toc: false
 
 ---
 
+# Dataset composition
+Select a demographic dimension and see how the dataset is distributed.
+
+```js
+import * as Inputs from "npm:@observablehq/inputs";
+import { CompositionBarChart } from "./components/data_composition.js";
+
+const compositionData = await FileAttachment("./data/data_composition.json").json();
+const compositionOptions = ["age", "education", "employment", "language", "profession"];
+const selectedComposition = view(
+  Inputs.select(compositionOptions, { label: "Composition by", value: "age" })
+);
+```
+
+<div class="card" style="min-height: 520px;">${
+  resize((width) =>
+    CompositionBarChart(compositionData[selectedComposition].items, width, {
+      title: compositionData[selectedComposition].label
+    })
+  )
+}</div>
+
 # AI sentiment
 In an ever-increasing use and presence of AI in the programming landscape, we show how different ages, backgrounds, and working environments impact the sentiment towards the use of AI.
 
@@ -29,7 +51,6 @@ When looking at profession, it is clear that hobbyists are remarkably less favor
 
 When looking at employment, we again see higher uncertainty in the answers for retired developers.
 ```js
-import * as Inputs from "npm:@observablehq/inputs";
 import { StackedSentimentPlot } from "./components/q1/q1.js"
 
 const masterSentimentData = await FileAttachment("./data/ai_sentiment.json").json();
