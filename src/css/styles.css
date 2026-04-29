@@ -95,3 +95,63 @@
   width: 100%;
   box-sizing: border-box;
 }
+/* Style the selector inputs wrapper */
+.observablehq-input {
+  display: flex;
+  align-items: center;
+  /* Centers the boxes perfectly along the horizontal line */
+  gap: 0.75rem;
+  /* Slightly increased gap for better readability */
+  margin-bottom: 1rem;
+}
+
+/* Style the label OUTSIDE the box */
+.observablehq-input label,
+.observablehq-input>span,
+.observablehq-input .observablehq-label {
+  margin: 0;
+  padding: 0;
+  /* CRUCIAL: No padding here so the text aligns naturally */
+  font-size: 1rem;
+  /* Exactly matches the select box */
+  line-height: 1.2;
+  font-family: var(--sans-serif);
+  font-weight: 500;
+  /* Optional: makes the label slightly crisper */
+  color: #333333;
+  /* Matches your darker text preference */
+}
+
+/* Style the text INSIDE the box */
+select,
+.observablehq-input select,
+.observablehq-select {
+  margin: 0;
+  padding: 0.5rem 1rem;
+  /* Keeps the box looking like a button, but not too tall */
+  font-size: 1rem;
+  /* Exactly matches the label */
+  line-height: 1.2;
+  /* Exactly matches the label */
+  font-family: var(--sans-serif);
+  border-radius: 8px;
+  border: 2px solid var(--theme-foreground-muted);
+  background-color: var(--theme-background);
+  color: var(--theme-foreground);
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+select:hover,
+.observablehq-input select:hover,
+.observablehq-select:hover {
+  border-color: var(--theme-foreground-focus);
+}
+
+select:focus,
+.observablehq-input select:focus,
+.observablehq-select:focus {
+  outline: none;
+  border-color: var(--theme-foreground-focus);
+  box-shadow: 0 0 0 3px rgba(0, 0, 0, 0.1);
+}
