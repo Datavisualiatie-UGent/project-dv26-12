@@ -92,29 +92,6 @@ const selectedDivergingOption2 = view(Inputs.select(DivergingOptions2, {label: "
   resize(width => RescaledDivergingPlot(masterDivergingSentimentData[selectedDivergingOption][selectedDivergingOption2], width, selectedDivergingOption))
 }</div>
 
-<!-- <div class="card" style="min-height: 450px;">${
-  resize(width => DivergingStackedSentimentPlot(masterDivergingSentimentData[selectedDivergingOption][selectedDivergingOption2], width, selectedDivergingOption))
-}</div> -->
-
-<!-- <div class="card" style="min-height: 450px;">${
-  resize(width => PolarizedDivergingPlot(masterDivergingSentimentData[selectedDivergingOption][selectedDivergingOption2], width, selectedDivergingOption))
-}</div> -->
-
-<!-- # Q1.2 Waffle Chart
-
-```js
-import { WaffleChart } from "./components/q1/waffle.js"
-
-const masterWaffleSentimentData2 = await FileAttachment("./data/ai_sentiment.json").json();
-const waffleOptions1 = Object.keys(masterWaffleSentimentData2).filter(key => key !== "Language");
-const selectedWaffleOption = view(Inputs.select(waffleOptions1, {label: "Group by", value: waffleOptions1[0]}));
-```
-
-
-<div class="card">${
-  resize(width => WaffleChart(masterWaffleSentimentData2[selectedWaffleOption]["Category"], width, selectedWaffleOption))
-}</div> -->
-
 
 # The AI Migration Map: Analyzing Net User Flow Across Model Providers
 
