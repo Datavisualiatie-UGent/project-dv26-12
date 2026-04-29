@@ -1,3 +1,9 @@
+@import url('https://fonts.googleapis.com/css2?family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&display=swap');
+
+:root {
+  /* This overrides the default Observable font */
+  --sans-serif: 'Inter', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+}
 .hero {
   display: flex;
   flex-direction: column;
@@ -35,4 +41,57 @@
   .hero h1 {
     font-size: 90px;
   }
+}
+.container {
+  max-width: 900px;
+  /* Adjust this value to make the center wider or narrower */
+  margin: 0 auto;
+  /* Centers the container */
+  padding: 0 2rem;
+  /* Ensures content doesn't touch the edges on mobile */
+}
+
+.container p,
+.container h1,
+.container h2,
+.container h3,
+.container li {
+  max-width: none;
+  /* Observable defaults this to 640px; this removes that limit */
+  line-height: 1.6;
+  /* Improves readability */
+}
+
+/* 3. Prettier Typography Tweaks */
+.container h1 {
+  font-weight: 800;
+  letter-spacing: -0.02em;
+  margin-top: 3rem;
+}
+
+.container h2 {
+  font-weight: 700;
+  letter-spacing: -0.01em;
+  color: var(--theme-foreground-focus);
+  margin-top: 2.5rem;
+}
+
+.container p {
+  color: var(--theme-foreground-muted);
+  font-size: 1.1rem;
+  margin-bottom: 1.5rem;
+  color: #333333;
+}
+
+/* Optional: If you want your text to be even more readable (narrower), 
+   you can create a separate class for prose */
+.prose {
+  max-width: 800px;
+  margin: 0 auto;
+}
+
+/* Make sure cards inside the container still look good */
+.card {
+  width: 100%;
+  box-sizing: border-box;
 }
