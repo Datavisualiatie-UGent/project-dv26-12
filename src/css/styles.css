@@ -43,7 +43,7 @@
   }
 }
 .container {
-  max-width: 900px;
+  max-width: 950px;
   /* Adjust this value to make the center wider or narrower */
   margin: 0 auto;
   /* Centers the container */
