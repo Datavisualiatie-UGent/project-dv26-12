@@ -7,7 +7,7 @@ toc: false
 <div class="container">
   <div class="hero">
     <h1>AI usage among stack-overflow users</h1>
-    <p>How do different demographics of programmers use AI tools in their development workflow?</p>
+    <p>This project was made with data from the 2025 Stack Overflow Developer Survey.</p>
   </div>
 </div>
 
