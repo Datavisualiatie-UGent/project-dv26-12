@@ -136,39 +136,13 @@ const normalised_data = await FileAttachment("./data/model_usage_normalised.json
 ## Which parts of your development workflow are you currently integrating into AI or using AI tools to accomplish or plan to use AI to accomplish over the next 3 - 5 years?
 
 ```js
-// Load the raw data
+import { prepareAiRadarData, AiRadarPlot } from "./components/ai_radar.js";
+
 const rawAiRadarData = await FileAttachment("./data/radar_data.json").json();
+const radar = prepareAiRadarData(rawAiRadarData);
 
-const excludedTasks = [
-  "other",
-  "deployment and monitoring",
-  "predictive analytics",
-  "committing and reviewing"
-];
-
-const aiRadarData = rawAiRadarData.filter(d => {
-  const taskName = d.task.toLowerCase();
-  const ageName = d.Age ? d.Age.toLowerCase() : "";
-  const hasExcludedTask = excludedTasks.some(word => taskName.includes(word));
-  const hasExcludedAge = ageName.includes("prefer not to say");
-  return !hasExcludedTask && !hasExcludedAge;
-});
-
-const tasks = Array.from(new Set(aiRadarData.map(d => d.task)));
-
-const ages = Array.from(new Set(aiRadarData.map(d => d.Age)))
-  .sort((a, b) => {
-    if (a === "All") return -1;
-    if (b === "All") return 1;
-    return a.localeCompare(b);
-  });
-
-const longitude = d3.scalePoint(tasks, [0, 360 - 360 / tasks.length]);
-const maxScore = d3.max(aiRadarData, d => d.normalized_score);
-const radiusScale = d3.scaleLinear([0, maxScore], [0, 0.5]);
-const scoreTicks = radiusScale.ticks(5);
-
-const colorScale = d3.scaleOrdinal(d3.schemeTableau10).domain(ages);
+const ages = radar.ages;
+const colorScale = radar.colorScale;
 ```
 
 ```js
@@ -178,7 +152,7 @@ const setSelectedAges = (v) => { selectedAges.value = v; };
 ```
 
 ```js
-const filteredData = aiRadarData.filter(d => selectedAges.includes(d.Age));
+// filteredData is handled inside AiRadarPlot
 ```
 The following Radar Chart tells us something about which tasks AI is used for between different age-demographics. On average, we can see that the main usage of AI is 'Search for answers', with nearly 15% of all AI-users using AI for this purpose. This tells us that AI is mostly used as a glorified search engine. 
 Another interesting insight follows when comparing the younger generation (18-24) to the old guard (65+). The most notable difference here are for the tasks: 'Writing code', 'Creating or maintaining documentation', 'Generating content orsynthetic data
@@ -187,23 +161,7 @@ Another interesting insight follows when comparing the younger generation (18-24
 
 <div class="card" style="min-height: 600px; display: flex; align-items: flex-start; gap: 1rem;">
   <div style="flex: 1;">
-    ${resize((width) => Plot.plot({
-      width,
-      projection: {
-        type: "azimuthal-equidistant",
-        rotate: [0, -90],
-        domain: d3.geoCircle().center([0, 90]).radius(0.65)()
-      },
-      color: { legend: false, scheme: "Tableau10", domain: ages },
-      marks: [
-        Plot.geo(scoreTicks.map(radiusScale), { geometry: (r) => d3.geoCircle().center([0, 90]).radius(r)(), stroke: "currentColor", fill: "currentColor", strokeOpacity: 0.3, fillOpacity: 0.03, strokeWidth: 0.5 }),
-        Plot.link(tasks, { x1: (d) => longitude(d), y1: 90 - 0.57, x2: 0, y2: 90, stroke: "currentColor", strokeOpacity: 0.2, strokeWidth: 1.5 }),
-        Plot.text(scoreTicks.filter(d => d > 0), { x: 180, y: (d) => 90 - radiusScale(d), dx: 2, textAnchor: "start", text: (d) => `${d.toFixed(0)}%`, fill: "currentColor", stroke: "var(--theme-background-alt)", strokeWidth: 3, fontSize: 10 }),
-        Plot.text(tasks, { x: (d) => longitude(d), y: 90 - 0.60, text: (d) => d, lineWidth: 12, fontSize: 11 }),
-        Plot.area(filteredData, { x1: (d) => longitude(d.task), y1: (d) => 90 - radiusScale(d.normalized_score), x2: 0, y2: 90, fill: "Age", stroke: "Age", curve: "cardinal-closed", fillOpacity: 0.2 }),
-        Plot.dot(filteredData, { x: (d) => longitude(d.task), y: (d) => 90 - radiusScale(d.normalized_score), fill: "Age", stroke: "var(--theme-background-alt)", r: 4 })
-      ]
-    }))}
+    ${resize((width) => AiRadarPlot(radar, width, selectedAges))}
   </div>
 
   <div style="display: flex; flex-direction: column; gap: 0.5rem; padding-top: 1rem; min-width: 160px;">
