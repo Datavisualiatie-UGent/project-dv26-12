@@ -57,7 +57,7 @@ Again for hobbiest we see that we have an almost 50/50 split in sentiment when w
 ```js
 import { DivergingSentimentPlot, DivergingStackedSentimentPlot, PolarizedDivergingPlot, RescaledDivergingPlot} from "./components/q1/b2b.js"
 
-const masterDivergingSentimentData = await FileAttachment("./data/ai_sentiment1.json").json();
+const masterDivergingSentimentData = await FileAttachment("./data/ai_sentiment.json").json();
 const DivergingOptions1 = Object.keys(masterDivergingSentimentData);
 const selectedDivergingOption = view(Inputs.select(DivergingOptions1, {label: "Group by", value: DivergingOptions1[0]}));
 ```
