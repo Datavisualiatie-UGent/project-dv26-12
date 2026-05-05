@@ -12,6 +12,9 @@
   margin: 4rem 0 8rem;
   text-wrap: balance;
   text-align: center;
+  position: relative;
+  overflow: hidden;
+  z-index: 1;
 }
 
 .hero h1 {
@@ -25,6 +28,8 @@
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
   background-clip: text;
+  position: relative;
+  z-index: 1;
 }
 
 .hero h2 {
@@ -35,6 +40,8 @@
   font-weight: 500;
   line-height: 1.5;
   color: var(--theme-foreground-muted);
+  position: relative;
+  z-index: 1;
 }
 
 @media (min-width: 640px) {
@@ -154,4 +161,22 @@ select:focus,
   outline: none;
   border-color: var(--theme-foreground-focus);
   box-shadow: 0 0 0 3px rgba(0, 0, 0, 0.1);
+}
+
+#particle-wrapper {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  pointer-events: none;
+  overflow: hidden;
+  z-index: 0;
+}
+
+#particle-bg {
+  position: absolute;
+  z-index: 0;
+  pointer-events: none;
+  opacity: 0.35;
 }

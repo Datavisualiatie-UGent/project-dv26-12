@@ -4,8 +4,95 @@ toc: false
 
 <link rel="stylesheet" href="./css/styles.css">
 
+```js
+{
+  const canvas = document.getElementById("particle-bg");
+  const ctx = canvas.getContext("2d");
+
+  let W, H, particles;
+
+  const N = 200;
+  const MAX_DIST = 100;
+
+  function resize() {
+    const hero = document.querySelector(".hero");
+    const rect = hero.getBoundingClientRect();
+    const padding = 60;
+
+    W = canvas.width  = rect.width  + padding * 2;
+    H = canvas.height = rect.height + padding * 2;
+
+    canvas.style.left = -padding + "px";
+    canvas.style.top  = -padding + "px";
+  }
+
+  function initParticles() {
+    particles = Array.from({ length: N }, () => ({
+      x:  Math.random() * W,
+      y:  Math.random() * H,
+      vx: (Math.random() - 0.5) * 0.4,
+      vy: (Math.random() - 0.5) * 0.4,
+      r:  Math.random() * 2 + 1,
+    }));
+  }
+
+  function draw() {
+    ctx.clearRect(0, 0, W, H);
+
+    // Draw connecting lines
+    for (let i = 0; i < N; i++) {
+      for (let j = i + 1; j < N; j++) {
+        const dx = particles[i].x - particles[j].x;
+        const dy = particles[i].y - particles[j].y;
+        const dist = Math.sqrt(dx * dx + dy * dy);
+        if (dist < MAX_DIST) {
+          ctx.beginPath();
+          ctx.moveTo(particles[i].x, particles[i].y);
+          ctx.lineTo(particles[j].x, particles[j].y);
+          ctx.strokeStyle = `rgba(99, 179, 237, ${1 - dist / MAX_DIST})`;
+          ctx.lineWidth = 0.6;
+          ctx.stroke();
+        }
+      }
+    }
+
+    // Draw dots
+    for (const p of particles) {
+      ctx.beginPath();
+      ctx.arc(p.x, p.y, p.r, 0, Math.PI * 2);
+      ctx.fillStyle = "rgba(99, 179, 237, 0.8)";
+      ctx.fill();
+    }
+  }
+
+  function update() {
+    for (const p of particles) {
+      p.x += p.vx;
+      p.y += p.vy;
+      if (p.x < 0 || p.x > W) p.vx *= -1;
+      if (p.y < 0 || p.y > H) p.vy *= -1;
+    }
+  }
+
+  function loop() {
+    update();
+    draw();
+    requestAnimationFrame(loop);
+  }
+
+  resize();
+  initParticles();
+  loop();
+
+  window.addEventListener("resize", () => { resize(); initParticles(); });
+}
+```
+
 <div class="container">
   <div class="hero">
+    <div id="particle-wrapper">
+      <canvas id="particle-bg"></canvas>
+    </div>
     <h1>AI usage among stack-overflow users</h1>
     <p>This project was made with data from the 2025 Stack Overflow Developer Survey.</p>
   </div>
