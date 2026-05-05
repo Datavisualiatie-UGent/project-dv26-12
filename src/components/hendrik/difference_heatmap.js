@@ -51,7 +51,7 @@ function matrixToFlat(diff, names) {
   return out;
 }
 
-function matrixToLowerFlat(diff, names) {
+/* function matrixToLowerFlat(diff, names) {
   const out = [];
 
   for (let i = 0; i < names.length; i++) {
@@ -67,15 +67,14 @@ function matrixToLowerFlat(diff, names) {
   }
 
   return out;
-}
+} */
 
 export function DifferenceHeatmap(data, width = 900) {
   const { diff, names } = buildDifferenceMatrix(data);
   const flat = matrixToFlat(diff, names);
   const maxAbs = d3.max(flat, d => Math.abs(d.value));
 
-  console.log(matrixToLowerFlat(diff, names));
-  
+  //console.log(matrixToLowerFlat(diff, names));
 
   const plot = Plot.plot({
     width,
@@ -120,42 +119,25 @@ export function DifferenceHeatmap(data, width = 900) {
     fontFamily: "system-ui, sans-serif",
     transition: "opacity 0.15s ease",
   });
+  
   document.body.appendChild(tooltip);
 
-  const xScale = plot.scale("x");
-  const yScale = plot.scale("y");
-
   plot.addEventListener("pointermove", (event) => {
-    const rect = plot.getBoundingClientRect();
-    const px = event.clientX - rect.left;
-    const py = event.clientY - rect.top;
+     const el = document.elementFromPoint(event.clientX, event.clientY);
+    const idx = el?.__data__;
 
-    const xScale = plot.scale("x");
-    const yScale = plot.scale("y");
-
-    // Use the scale's invert or bandwidth to find the right band
-    const bandwidth_x = (xScale.range[1] - xScale.range[0]) / names.length;
-    const bandwidth_y = Math.abs(yScale.range[1] - yScale.range[0]) / names.length;
-
-    // Which column (want)?
-    const xIdx = Math.floor((px - xScale.range[0]) / bandwidth_x);
-    // Which row (worked)?
-    const yIdx = Math.floor((py - Math.min(...yScale.range)) / bandwidth_y) -1;
-
-    if (xIdx < 0 || xIdx >= names.length || yIdx < 0 || yIdx >= names.length) {
+    if (idx == null || typeof idx !== "number") {
       tooltip.style.display = "none";
       return;
     }
 
-    const wantVal   = xScale.domain[xIdx];
-    const workedVal = yScale.domain[yIdx];
+    const d = flat[idx];
 
-    if (!wantVal || !workedVal || wantVal === workedVal) {
+    if (!d?.worked || !d?.want || d.worked === d.want) {
       tooltip.style.display = "none";
       return;
     }
 
-    const d = flat.find(f => f.want === wantVal && f.worked === workedVal);
     if (!d) { tooltip.style.display = "none"; return; }
 
     const v = d.value * 100;
