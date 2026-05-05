@@ -11,16 +11,23 @@ toc: false
 
   let W, H, particles;
 
-  const N = 200;
-  const MAX_DIST = 100;
+  const N = 250;
+  const MAX_DIST = 200;
 
   function resize() {
     const hero = document.querySelector(".hero");
-    const rect = hero.getBoundingClientRect();
+    const wrapper = document.getElementById("particle-wrapper");
+    const containers = document.querySelectorAll(".container");
+    const nextContainer = containers[1];
+    const heroRect = hero.getBoundingClientRect();
+    const nextContainerRect = nextContainer?.getBoundingClientRect();
+    const stretchHeight = (nextContainerRect ? nextContainerRect.top - heroRect.top : heroRect.height) - 40;
+    wrapper.style.height = `${stretchHeight}px`;
+    const wrapperRect = wrapper.getBoundingClientRect();
     const padding = 60;
 
-    W = canvas.width  = rect.width  + padding * 2;
-    H = canvas.height = rect.height + padding * 2;
+    W = canvas.width  = wrapperRect.width + padding * 2;
+    H = canvas.height = stretchHeight + padding * 2;
 
     canvas.style.left = -padding + "px";
     canvas.style.top  = -padding + "px";
