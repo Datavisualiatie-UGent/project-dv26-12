@@ -107,13 +107,14 @@ Another interesting pattern is that **the sentiment towards AI tools tends to be
 
 # The AI Migration Map: Analyzing Net User Flow Across Model Providers
 
-Our next question is: *which LLM models for AI tools have you used for development work in the past year, and which would you like to use next year?*
+Our next question is: *which model providers attract users from competitors, and which providers tend to lose them?*
 
-Because there are so many models out there, we have grouped models based on the company that provides them. For example, we have grouped all models provided by OpenAI (such as GPT-3.5, GPT-4, and ChatGPT) under the umbrella of "OpenAI". This allows us to analyze the net migration patterns between different companies rather than individual models, which can provide insights into brand loyalty and overall market dynamics.
+To make the comparison readable, we group individual models by provider (for example, GPT-3.5, GPT-4, and ChatGPT are all counted under OpenAI).  
+Each cell in the map shows a **net flow** between two providers:
 
+**net flow (A → B) = % of A users who want B − % of B users who want A**
 
-
-This flow diagram visualizes the net migration preferences among users of major AI model providers. Each connection represents the net difference in switching interest between two companies, calculated as the percentage of users of one company willing to switch to the other minus the percentage of users in the opposite direction. 
+A positive value means B is a net winner in that pair; a negative value means A retains more users than it loses.
 
 ```js
 import { DifferenceHeatmap } from "./components/hendrik/difference_heatmap.js"
@@ -124,7 +125,11 @@ const normalised_data = await FileAttachment("./data/model_usage_normalised.json
   resize(width => DifferenceHeatmap(normalised_data, width))
 }</div>
 
-OpenAI emerges as the strongest attractor across the ecosystem, drawing interest from 13-27% of users at competing platforms, with particularly high appeal among X (26.6%), Perplexity (25.3%), and Meta (23.8%) users. Google maintains the second-strongest pull, attracting 6-14% of users from other providers. The data reveals a clear hierarchy of perceived desirability, with more established players like OpenAI and Google drawing significantly more interest than they lose, while newer or smaller providers like Reka, Cohere, and Alibaba show substantial outflows toward the market leaders. Notably, some transitions show near-zero or even slightly negative flows—such as DeepSeek to Anthropic (-0.17%)—suggesting strong satisfaction or loyalty among certain user bases. The pattern indicates a market where users actively consider alternatives, with switching interest concentrated toward a few dominant platforms rather than distributed evenly across competitors.
+The strongest pull is toward **OpenAI**: net inflows from every other provider are large (for example, +26.6 from X, +25.3 from Perplexity, and +23.8 from Meta). In other words, no matter where users start, OpenAI tends to win more users than it loses in pairwise comparisons. **Google** is the second main attractor, with consistent positive inflows from most providers (typically around +6 to +14 percentage points).
+
+Below that top tier, **DeepSeek** and **Anthropic** show positive overall inflow as well, but with a smaller and more selective advantage. DeepSeek gains net users from many providers (including Microsoft, Amazon, Cohere, and Reka), while its flow with Anthropic is almost balanced (-0.17), indicating very similar two-way switching interest between those two ecosystems. This near-zero edge is useful because it shows that not all relationships are dominated by a single provider; some pairs are genuinely competitive.
+
+The providers with mostly negative balances (such as Reka, Cohere, Amazon, Microsoft, Alibaba, and Perplexity) are not necessarily unpopular, but they are generally less preferred as a *next* destination when users compare options side by side. Taken together, the map suggests a market with a clear hierarchy: a small number of providers absorb most of the net migration, while the rest contribute more outbound interest than inbound interest. The key takeaway is that switching intent is active, but it is not evenly spread across the ecosystem.
 
 
 </div>
