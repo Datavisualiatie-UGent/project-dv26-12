@@ -1,5 +1,7 @@
 .DS_Store
+/dist/
 node_modules/
 yarn-error.log
+.venv/
 
 src/data/stack-overflow-developer-survey-2025/
