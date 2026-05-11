@@ -123,8 +123,10 @@ agegroup_data = add_and_filtered(agegroup_df, category="AgeGroup")
 # Education
 education_mapping = {
     'Master\'s degree (M.A., M.S., M.Eng., MBA, etc.)': 'Master',
+    'Master’s degree (M.A., M.S., M.Eng., MBA, etc.)': 'Master',
     'Associate degree (A.A., A.S., etc.)': 'Associate',
     'Bachelor\'s degree (B.A., B.S., B.Eng., etc.)': 'Bachelor',
+    'Bachelor’s degree (B.A., B.S., B.Eng., etc.)': 'Bachelor',
     'Some college/university study without earning a degree': 'Some College',
     'Professional degree (JD, MD, Ph.D, Ed.D, etc.)': 'Professional',
     'Secondary school (e.g. American high school, German Realschule or Gymnasium, etc.)': 'Secondary',

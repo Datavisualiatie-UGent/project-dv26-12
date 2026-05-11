@@ -108,10 +108,13 @@ def main() -> None:
     }
     expected_age_order = ["18-24", "25-34", "35-44", "45-54", "55-64", "65+"]
 
+    # Include both straight and curly apostrophe variants to match CSV labels
     education_mapping = {
         "Master's degree (M.A., M.S., M.Eng., MBA, etc.)": "Master",
+        "Master’s degree (M.A., M.S., M.Eng., MBA, etc.)": "Master",
         "Associate degree (A.A., A.S., etc.)": "Associate",
         "Bachelor's degree (B.A., B.S., B.Eng., etc.)": "Bachelor",
+        "Bachelor’s degree (B.A., B.S., B.Eng., etc.)": "Bachelor",
         "Some college/university study without earning a degree": "Some College",
         "Professional degree (JD, MD, Ph.D, Ed.D, etc.)": "Professional",
         "Secondary school (e.g. American high school, German Realschule or Gymnasium, etc.)": "Secondary",
