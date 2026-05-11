@@ -35,6 +35,9 @@ jobs:
       - name: Install Python dependencies
         run: uv sync
 
+      - name: Unzip data
+        run: unzip src/data/stack-overflow-developer-survey-2025.zip -d src/data/
+
       - id: date
         run: echo "date=$(date +'%Y-%m-%d')" >> $GITHUB_OUTPUT
 
