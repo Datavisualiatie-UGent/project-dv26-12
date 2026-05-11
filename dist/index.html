@@ -1,0 +1,379 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+<meta name="generator" content="Observable Framework v1.13.4">
+<title>Dataset composition | Datavisualisatie Project</title>
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="preload" as="style" href="https://fonts.googleapis.com/css2?family=Source+Serif+4:ital,opsz,wght@0,8..60,200..900;1,8..60,200..900&amp;display=swap" crossorigin>
+<link rel="preload" as="style" href="./_observablehq/theme-air.d5b7fcbe.css">
+<link rel="preload" as="style" href="./_observablehq/stdlib/inputs.f7bf0e12.css">
+<link rel="stylesheet" type="text/css" href="https://fonts.googleapis.com/css2?family=Source+Serif+4:ital,opsz,wght@0,8..60,200..900;1,8..60,200..900&amp;display=swap" crossorigin>
+<link rel="stylesheet" type="text/css" href="./_observablehq/theme-air.d5b7fcbe.css">
+<link rel="stylesheet" type="text/css" href="./_observablehq/stdlib/inputs.f7bf0e12.css">
+<link rel="modulepreload" href="./_observablehq/client.2a98351a.js">
+<link rel="modulepreload" href="./_observablehq/runtime.607a8173.js">
+<link rel="modulepreload" href="./_observablehq/stdlib.277aeab8.js">
+<link rel="modulepreload" href="./_observablehq/stdlib/inputs.31cd1366.js">
+<link rel="modulepreload" href="./_import/components/data_composition.5c166afb.js">
+<link rel="modulepreload" href="./_import/components/q1/q1.82865936.js">
+<link rel="modulepreload" href="./_import/components/q1/b2b.194961af.js">
+<link rel="modulepreload" href="./_import/components/hendrik/difference_heatmap.ef4b8aeb.js">
+<link rel="modulepreload" href="./_import/components/ai_radar.619977f0.js">
+<link rel="modulepreload" href="./_npm/htl@0.3.1/72f4716c.js">
+<link rel="modulepreload" href="./_npm/@observablehq/plot@0.6.17/a96a6bbb.js">
+<link rel="modulepreload" href="./_npm/d3@7.9.0/66d82917.js">
+<link rel="modulepreload" href="./_npm/isoformat@0.2.1/18cbf477.js">
+<link rel="modulepreload" href="./_npm/interval-tree-1d@1.0.4/53fe8176.js">
+<link rel="modulepreload" href="./_npm/d3-array@3.2.4/e93ca09f.js">
+<link rel="modulepreload" href="./_npm/d3-axis@3.0.0/0f2de24d.js">
+<link rel="modulepreload" href="./_npm/d3-brush@3.0.0/65eb105b.js">
+<link rel="modulepreload" href="./_npm/d3-chord@3.0.1/7ef8fb2e.js">
+<link rel="modulepreload" href="./_npm/d3-color@3.1.0/aeb57b94.js">
+<link rel="modulepreload" href="./_npm/d3-contour@4.0.2/1d2aed74.js">
+<link rel="modulepreload" href="./_npm/d3-delaunay@6.0.4/87adea64.js">
+<link rel="modulepreload" href="./_npm/d3-dispatch@3.0.1/9ba9c7f3.js">
+<link rel="modulepreload" href="./_npm/d3-drag@3.0.0/4202580c.js">
+<link rel="modulepreload" href="./_npm/d3-dsv@3.0.1/9cffc2bd.js">
+<link rel="modulepreload" href="./_npm/d3-ease@3.0.1/cdd7e898.js">
+<link rel="modulepreload" href="./_npm/d3-fetch@3.0.1/b4e2ad9a.js">
+<link rel="modulepreload" href="./_npm/d3-force@3.0.0/5e804d15.js">
+<link rel="modulepreload" href="./_npm/d3-format@3.1.2/3785bf2d.js">
+<link rel="modulepreload" href="./_npm/d3-geo@3.1.1/40599fb3.js">
+<link rel="modulepreload" href="./_npm/d3-hierarchy@3.1.2/e49e792c.js">
+<link rel="modulepreload" href="./_npm/d3-interpolate@3.0.1/8d1e5425.js">
+<link rel="modulepreload" href="./_npm/d3-path@3.1.0/20d3f133.js">
+<link rel="modulepreload" href="./_npm/d3-polygon@3.0.1/7553081f.js">
+<link rel="modulepreload" href="./_npm/d3-quadtree@3.0.1/0dfd751c.js">
+<link rel="modulepreload" href="./_npm/d3-random@3.0.1/3c90ee06.js">
+<link rel="modulepreload" href="./_npm/d3-scale@4.0.2/720b7f0a.js">
+<link rel="modulepreload" href="./_npm/d3-scale-chromatic@3.1.0/ba24c2e7.js">
+<link rel="modulepreload" href="./_npm/d3-selection@3.0.0/4d94e5b7.js">
+<link rel="modulepreload" href="./_npm/d3-shape@3.2.0/6d3a6726.js">
+<link rel="modulepreload" href="./_npm/d3-time@3.1.0/9f03c579.js">
+<link rel="modulepreload" href="./_npm/d3-time-format@4.1.0/07c9626f.js">
+<link rel="modulepreload" href="./_npm/d3-timer@3.0.1/b58a267d.js">
+<link rel="modulepreload" href="./_npm/d3-transition@3.0.1/004da2ac.js">
+<link rel="modulepreload" href="./_npm/d3-zoom@3.0.0/b5786b3f.js">
+<link rel="modulepreload" href="./_npm/binary-search-bounds@2.0.5/cbf6ba23.js">
+<link rel="modulepreload" href="./_npm/internmap@2.0.3/e08981d9.js">
+<link rel="modulepreload" href="./_npm/delaunator@5.1.0/d4ec0aa1.js">
+<link rel="modulepreload" href="./_npm/robust-predicates@3.0.3/42820bfa.js">
+<link rel="icon" href="./_file/observable.1af93621.png" type="image/png" sizes="32x32">
+<script type="module">
+
+import {define} from "./_observablehq/client.2a98351a.js";
+import {registerFile} from "./_observablehq/stdlib.277aeab8.js";
+
+registerFile("./data/ai_sentiment.json", {"name":"./data/ai_sentiment.json","mimeType":"application/json","path":"./_file/data/ai_sentiment.cfa63884.json","lastModified":1777461531561,"size":47268});
+registerFile("./data/data_composition.json", {"name":"./data/data_composition.json","mimeType":"application/json","path":"./_file/data/data_composition.3c9f316d.json","lastModified":1777463604468,"size":4965});
+registerFile("./data/model_usage_normalised.json", {"name":"./data/model_usage_normalised.json","mimeType":"application/json","path":"./_file/data/model_usage_normalised.a1c00b8a.json","lastModified":1776683718113,"size":9727});
+registerFile("./data/radar_data.json", {"name":"./data/radar_data.json","mimeType":"application/json","path":"./_file/data/radar_data.f7e3ba67.json","lastModified":1776690742640,"size":11356});
+
+define({id: "62fc3c3d", body: () => {
+{
+  const canvas = document.getElementById("particle-bg");
+  const ctx = canvas.getContext("2d");
+
+  let W, H, particles;
+
+  const N = 250;
+  const MAX_DIST = 200;
+
+  function resize() {
+    const hero = document.querySelector(".hero");
+    const wrapper = document.getElementById("particle-wrapper");
+    const containers = document.querySelectorAll(".container");
+    const nextContainer = containers[1];
+    const heroRect = hero.getBoundingClientRect();
+    const nextContainerRect = nextContainer?.getBoundingClientRect();
+    const stretchHeight = (nextContainerRect ? nextContainerRect.top - heroRect.top : heroRect.height) - 40;
+    wrapper.style.height = `${stretchHeight}px`;
+    const wrapperRect = wrapper.getBoundingClientRect();
+    const padding = 60;
+
+    W = canvas.width  = wrapperRect.width + padding * 2;
+    H = canvas.height = stretchHeight + padding * 2;
+
+    canvas.style.left = -padding + "px";
+    canvas.style.top  = -padding + "px";
+  }
+
+  function initParticles() {
+    particles = Array.from({ length: N }, () => ({
+      x:  Math.random() * W,
+      y:  Math.random() * H,
+      vx: (Math.random() - 0.5) * 0.4,
+      vy: (Math.random() - 0.5) * 0.4,
+      r:  Math.random() * 2 + 1,
+    }));
+  }
+
+  function draw() {
+    ctx.clearRect(0, 0, W, H);
+
+    // Draw connecting lines
+    for (let i = 0; i < N; i++) {
+      for (let j = i + 1; j < N; j++) {
+        const dx = particles[i].x - particles[j].x;
+        const dy = particles[i].y - particles[j].y;
+        const dist = Math.sqrt(dx * dx + dy * dy);
+        if (dist < MAX_DIST) {
+          ctx.beginPath();
+          ctx.moveTo(particles[i].x, particles[i].y);
+          ctx.lineTo(particles[j].x, particles[j].y);
+          ctx.strokeStyle = `rgba(99, 179, 237, ${1 - dist / MAX_DIST})`;
+          ctx.lineWidth = 0.6;
+          ctx.stroke();
+        }
+      }
+    }
+
+    // Draw dots
+    for (const p of particles) {
+      ctx.beginPath();
+      ctx.arc(p.x, p.y, p.r, 0, Math.PI * 2);
+      ctx.fillStyle = "rgba(99, 179, 237, 0.8)";
+      ctx.fill();
+    }
+  }
+
+  function update() {
+    for (const p of particles) {
+      p.x += p.vx;
+      p.y += p.vy;
+      if (p.x < 0 || p.x > W) p.vx *= -1;
+      if (p.y < 0 || p.y > H) p.vy *= -1;
+    }
+  }
+
+  function loop() {
+    update();
+    draw();
+    requestAnimationFrame(loop);
+  }
+
+  resize();
+  initParticles();
+  loop();
+
+  window.addEventListener("resize", () => { resize(); initParticles(); });
+}
+}});
+
+define({id: "87af377e", inputs: ["FileAttachment","view"], outputs: ["Inputs","CompositionBarChart","compositionData","compositionOptions","selectedComposition"], body: async (FileAttachment,view) => {
+const [Inputs, {CompositionBarChart}] = await Promise.all([import("./_observablehq/stdlib/inputs.31cd1366.js"), import("./_import/components/data_composition.5c166afb.js")]);
+
+const compositionData = await FileAttachment("./data/data_composition.json").json();
+const compositionOptions = ["age", "education", "employment", "language", "profession"];
+const selectedComposition = view(
+  Inputs.select(compositionOptions, { label: "Composition by", value: "age" })
+);
+return {Inputs,CompositionBarChart,compositionData,compositionOptions,selectedComposition};
+}});
+
+define({id: "c9d65f23", mode: "inline", inputs: ["resize","CompositionBarChart","compositionData","selectedComposition","display"], body: async (resize,CompositionBarChart,compositionData,selectedComposition,display) => {
+display(await(
+  resize((width) =>
+    CompositionBarChart(compositionData[selectedComposition].items, width, {
+      title: compositionData[selectedComposition].label
+    })
+  )
+))
+}});
+
+define({id: "1fc2051d", inputs: ["FileAttachment","view","Inputs"], outputs: ["StackedSentimentPlot","masterSentimentData","options","selectedOption"], body: async (FileAttachment,view,Inputs) => {
+const {StackedSentimentPlot} = await import("./_import/components/q1/q1.82865936.js");
+
+const masterSentimentData = await FileAttachment("./data/ai_sentiment.json").json();
+const options = Object.keys(masterSentimentData);
+const selectedOption = view(Inputs.select(options, {label: "Group by", value: options[0]}));
+return {StackedSentimentPlot,masterSentimentData,options,selectedOption};
+}});
+
+define({id: "78b4e4c3", inputs: ["view","Inputs"], outputs: ["options2","selectedOption2"], body: (view,Inputs) => {
+const options2 = ["Category", "Favorable", "Unfavorable"]
+const selectedOption2 = view(Inputs.select(options2, {label: "Sort by", value: options2[0]}));
+return {options2,selectedOption2};
+}});
+
+define({id: "4d4ffdae", mode: "inline", inputs: ["resize","StackedSentimentPlot","masterSentimentData","selectedOption","selectedOption2","display"], body: async (resize,StackedSentimentPlot,masterSentimentData,selectedOption,selectedOption2,display) => {
+display(await(
+  resize(width => StackedSentimentPlot(
+    masterSentimentData[selectedOption][selectedOption2], 
+    width, 
+    selectedOption 
+  ))
+))
+}});
+
+define({id: "cd1e17c8", inputs: ["FileAttachment","view","Inputs"], outputs: ["DivergingSentimentPlot","DivergingStackedSentimentPlot","PolarizedDivergingPlot","RescaledDivergingPlot","masterDivergingSentimentData","DivergingOptions1","selectedDivergingOption"], body: async (FileAttachment,view,Inputs) => {
+const {DivergingSentimentPlot, DivergingStackedSentimentPlot, PolarizedDivergingPlot, RescaledDivergingPlot} = await import("./_import/components/q1/b2b.194961af.js");
+
+const masterDivergingSentimentData = await FileAttachment("./data/ai_sentiment.json").json();
+const DivergingOptions1 = Object.keys(masterDivergingSentimentData);
+const selectedDivergingOption = view(Inputs.select(DivergingOptions1, {label: "Group by", value: DivergingOptions1[0]}));
+return {DivergingSentimentPlot,DivergingStackedSentimentPlot,PolarizedDivergingPlot,RescaledDivergingPlot,masterDivergingSentimentData,DivergingOptions1,selectedDivergingOption};
+}});
+
+define({id: "3a44d722", inputs: ["view","Inputs","options2"], outputs: ["DivergingOptions2","selectedDivergingOption2"], body: (view,Inputs,options2) => {
+const DivergingOptions2 = ["PolarizedFour", "PolarizedFourFavorable", "PolarizedFourUnfavorable"]
+const selectedDivergingOption2 = view(Inputs.select(DivergingOptions2, {label: "Sort by", value: options2[0]}));
+return {DivergingOptions2,selectedDivergingOption2};
+}});
+
+define({id: "eb246912", mode: "inline", inputs: ["resize","RescaledDivergingPlot","masterDivergingSentimentData","selectedDivergingOption","selectedDivergingOption2","display"], body: async (resize,RescaledDivergingPlot,masterDivergingSentimentData,selectedDivergingOption,selectedDivergingOption2,display) => {
+display(await(
+  resize(width => RescaledDivergingPlot(masterDivergingSentimentData[selectedDivergingOption][selectedDivergingOption2], width, selectedDivergingOption))
+))
+}});
+
+define({id: "29f4aed8", inputs: ["FileAttachment"], outputs: ["DifferenceHeatmap","normalised_data"], body: async (FileAttachment) => {
+const {DifferenceHeatmap} = await import("./_import/components/hendrik/difference_heatmap.ef4b8aeb.js");
+const normalised_data = await FileAttachment("./data/model_usage_normalised.json").json()
+return {DifferenceHeatmap,normalised_data};
+}});
+
+define({id: "96e4d850", mode: "inline", inputs: ["resize","DifferenceHeatmap","normalised_data","display"], body: async (resize,DifferenceHeatmap,normalised_data,display) => {
+display(await(
+  resize(width => DifferenceHeatmap(normalised_data, width))
+))
+}});
+
+define({id: "e750c4ba", inputs: ["FileAttachment"], outputs: ["prepareAiRadarData","AiRadarPlot","rawAiRadarData","radar","ages","colorScale"], body: async (FileAttachment) => {
+const {prepareAiRadarData, AiRadarPlot} = await import("./_import/components/ai_radar.619977f0.js");
+
+const rawAiRadarData = await FileAttachment("./data/radar_data.json").json();
+const radar = prepareAiRadarData(rawAiRadarData);
+
+const ages = radar.ages;
+const colorScale = radar.colorScale;
+return {prepareAiRadarData,AiRadarPlot,rawAiRadarData,radar,ages,colorScale};
+}});
+
+define({id: "b638042c", inputs: ["Mutable"], outputs: ["selectedAges","setSelectedAges"], body: (Mutable) => {
+// Mutable reactive value — only "All" selected by default
+const selectedAges = Mutable(["All"]);
+const setSelectedAges = (v) => { selectedAges.value = v; };
+return {selectedAges,setSelectedAges};
+}});
+
+define({id: "01f7fee2", body: () => {
+// filteredData is handled inside AiRadarPlot
+}});
+
+define({id: "6952e0f9", mode: "inline", inputs: ["resize","AiRadarPlot","radar","selectedAges","display"], body: async (resize,AiRadarPlot,radar,selectedAges,display) => {
+display(await(
+resize((width) => AiRadarPlot(radar, width, selectedAges))
+))
+}});
+
+define({id: "4a5a56e1", mode: "inline", inputs: ["ages","selectedAges","colorScale","html","setSelectedAges","display"], body: async (ages,selectedAges,colorScale,html,setSelectedAges,display) => {
+display(await(
+ages.map(age => {
+      const active = selectedAges.includes(age);
+      const color = colorScale(age);
+      const btn = html`<button style="
+        display: block;
+        width: 100%;
+        padding: 0.4rem 0.75rem;
+        border-radius: 6px;
+        border: 2px solid ${color};
+        background: ${active ? color : "transparent"};
+        color: ${active ? "#fff" : "currentColor"};
+        font-size: 0.8rem;
+        font-weight: 500;
+        cursor: pointer;
+        text-align: left;
+        transition: background 0.15s, color 0.15s;
+      ">${age}</button>`;
+      btn.addEventListener("click", () => {
+        const current = selectedAges.includes(age)
+          ? selectedAges.filter(a => a !== age)
+          : [...selectedAges, age];
+        setSelectedAges(current);
+      });
+      return btn;
+    })
+))
+}});
+
+</script>
+</head>
+<body>
+<div id="observablehq-center">
+<main id="observablehq-main" class="observablehq">
+<link rel="stylesheet" href="./_file/css/styles.ab923f54.css">
+<div class="observablehq observablehq--block"><!--:62fc3c3d:--></div>
+<div class="container">
+  <div class="hero">
+    <div id="particle-wrapper">
+      <canvas id="particle-bg"></canvas>
+    </div>
+    <h1>AI usage among stack-overflow users</h1>
+    <p>This project was made with data from the 2025 Stack Overflow Developer Survey.</p>
+  </div>
+</div>
+<hr>
+<div class="container">
+<p>Each year, thousands of stack-overflow users participate in the annual developer survey, sharing insights about their backgrounds, preferences, and experiences in the programming world. In this project, we analyze the 2025 edition of the survey to explore how different demographics of programmers use AI tools in their development workflow. We investigate the composition of the dataset, examine sentiment towards AI, and analyze migration patterns among AI model providers. Through interactive visualizations, we aim to uncover trends and insights that shed light on the evolving relationship between developers and AI technologies.</p>
+<h1 id="dataset-composition" tabindex="-1"><a class="observablehq-header-anchor" href="#dataset-composition">Dataset composition</a></h1>
+<p>Because the dataset is quite large and complex, we have normalized the data in the graphs below, so that the values are comparable across different demographic groups. Because this might obscure the actual distribution of the dataset, we also show the composition of the dataset across different demographic dimensions. This allows us to reason about the representativeness of the dataset and the potential biases that might be present in the data.</p>
+<div class="observablehq observablehq--block"><!--:87af377e:--></div>
+<div class="card"><observablehq-loading></observablehq-loading><!--:c9d65f23:--></div>
+<p>As you can see in the graphs above, the dataset is mostly made up of younger developers, with a significant drop in representation for older age groups. The majority of respondents have a bachelor's degree, and most are employed full-time. In terms of programming languages, JavaScript is the most commonly used language among respondents, followed by Python and Java. The dataset also includes a mix of professionals, hobbyists, students, and retired developers, with professionals being the largest group.</p>
+</div>
+<div class="container">
+<h1 id="ai-sentiment" tabindex="-1"><a class="observablehq-header-anchor" href="#ai-sentiment">AI sentiment</a></h1>
+<p>The first big question that we want to answer is: <em>how do different demographics of programmers feel about using AI tools in their development workflow?</em></p>
+<p>To answer this question, we look at the distribution of answers to the question about AI sentiment across different demographic groups. We also look at the distribution of answers when we exclude the "uncertain" category, to get a better sense of the opinionated distribution of answers.</p>
+<div class="observablehq observablehq--block"><!--:1fc2051d:--></div>
+<div class="observablehq observablehq--block"><!--:78b4e4c3:--></div>
+<div class="card" style="min-height: 500px;"><observablehq-loading></observablehq-loading><!--:4d4ffdae:--></div>
+<p>Depending on how we group the answers, we can see some interesting patterns in the data. When we look at the distribution of answers across different age groups, we see that <strong>developers between the ages of 24 and 54 are more likely to have a favorable opinion of AI tools compared to younger and older developers</strong>. This could be because developers in this age range are more likely to be in the prime of their careers and may see AI tools as a way to improve their productivity and stay competitive in the job market. On the other hand, younger developers may be more skeptical of AI tools because they may not have as much experience with them, while older developers may be more resistant to change and may prefer traditional methods of programming.</p>
+<p>When we look at the distribution of answers across different professions, we see that <strong>hobbyists are less likely to have a favorable opinion of AI tools compared to professionals</strong>. This could be because hobbyists feel less external pressure to adopt new tools and technologies for the sake of improving workflow efficiency, and may be more focused on the enjoyment of programming rather than optimizing for productivity.</p>
+<p>In the graph below, we leave out the "indifferent" and "unsure" categories to get a better sense of the opinionated distribution of answers.</p>
+<div class="observablehq observablehq--block"><!--:cd1e17c8:--></div>
+<div class="observablehq observablehq--block"><!--:3a44d722:--></div>
+<div class="card" style="min-height: 450px;"><observablehq-loading></observablehq-loading><!--:eb246912:--></div>
+<p>The most notable pattern that emerges from the data is that hobbyists are very divided in their sentiment towards AI tools, with a significant portion expressing unfavorable opinions. With <strong>only 50.4% of opinionated hobbyists expressing favorable sentiment</strong>, this group stands out as the most polarized in their views on AI tools. This polarization could be attributed to a variety of factors, such as differing levels of familiarity with AI technologies, varying expectations for how AI should be integrated into their programming workflow, or a stronger emotional attachment to traditional programming methods among hobbyists compared to professionals who may prioritize efficiency and productivity.</p>
+<p>Another interesting pattern is that <strong>the sentiment towards AI tools tends to be more favorable among developers who use higher-level programming languages, such as Dart, Swift, and TypeScript, compared to those who use lower-level systems programming languages like Assembly, Rust, C, and C++</strong>. This could be because developers working with higher-level languages may find AI tools more beneficial for tasks like code generation, debugging, and documentation, while those working with lower-level languages may have more complex and performance-critical code that they feel is less suited for AI assistance.</p>
+</div>
+<div class="container">
+<h1 id="the-ai-migration-map-analyzing-net-user-flow-across-model-providers" tabindex="-1"><a class="observablehq-header-anchor" href="#the-ai-migration-map-analyzing-net-user-flow-across-model-providers">The AI Migration Map: Analyzing Net User Flow Across Model Providers</a></h1>
+<p>Our next question is: <em>which model providers attract users from competitors, and which providers tend to lose them?</em></p>
+<p>To make the comparison readable, we group individual models by provider (for example, GPT-3.5, GPT-4, and ChatGPT are all counted under OpenAI).<br>
+Each cell in the map shows a <strong>net flow</strong> between two providers:</p>
+<p><strong>net flow (A → B) = % of A users who want B − % of B users who want A</strong></p>
+<p>A positive value means B is a net winner in that pair; a negative value means A retains more users than it loses.</p>
+<div class="observablehq observablehq--block"><!--:29f4aed8:--></div>
+<div class="card" style="min-height: 500px;"><observablehq-loading></observablehq-loading><!--:96e4d850:--></div>
+<p>The strongest pull is toward <strong>OpenAI</strong>: net inflows from every other provider are large (for example, +26.6 from X, +25.3 from Perplexity, and +23.8 from Meta). In other words, no matter where users start, OpenAI tends to win more users than it loses in pairwise comparisons. <strong>Google</strong> is the second main attractor, with consistent positive inflows from most providers (typically around +6 to +14 percentage points).</p>
+<p>Below that top tier, <strong>DeepSeek</strong> and <strong>Anthropic</strong> show positive overall inflow as well, but with a smaller and more selective advantage. DeepSeek gains net users from many providers (including Microsoft, Amazon, Cohere, and Reka), while its flow with Anthropic is almost balanced (-0.17), indicating very similar two-way switching interest between those two ecosystems. This near-zero edge is useful because it shows that not all relationships are dominated by a single provider; some pairs are genuinely competitive.</p>
+<p>The providers with mostly negative balances (such as Reka, Cohere, Amazon, Microsoft, Alibaba, and Perplexity) are not necessarily unpopular, but they are generally less preferred as a <em>next</em> destination when users compare options side by side. Taken together, the map suggests a market with a clear hierarchy: a small number of providers absorb most of the net migration, while the rest contribute more outbound interest than inbound interest. The key takeaway is that switching intent is active, but it is not evenly spread across the ecosystem.</p>
+</div>
+<div class="container">
+<h1 id="ai-usage-in-development-workflow" tabindex="-1"><a class="observablehq-header-anchor" href="#ai-usage-in-development-workflow">AI usage in development workflow</a></h1>
+<p>Our final question is: <em>which parts of your development workflow are you currently integrating into AI or using AI tools to accomplish or plan to use AI to accomplish over the next 3 - 5 years?</em></p>
+<p>Since we have now established that sentiment towards AI tools varies across different demographic groups, we want to take a closer look at how the actual usage of AI tools varies across different demographic groups. The radar chart below shows the distribution of AI usage across different tasks for different age groups. This allows us to see which tasks are more commonly associated with AI usage among different age demographics, and whether there are any notable differences in the types of tasks that younger versus older developers are using AI for.</p>
+<div class="observablehq observablehq--block"><!--:e750c4ba:--></div>
+<div class="observablehq observablehq--block"><!--:b638042c:--></div>
+<div class="observablehq observablehq--block"><!--:01f7fee2:--></div>
+<div class="card" style="min-height: 600px; display: flex; align-items: flex-start; gap: 1rem;">
+  <div style="flex: 1;">
+    <observablehq-loading></observablehq-loading><!--:6952e0f9:-->
+  </div>
+  <div style="display: flex; flex-direction: column; gap: 0.5rem; padding-top: 1rem; min-width: 160px;">
+    <span style="font-size: 0.75rem; font-weight: 600; text-transform: uppercase; letter-spacing: 0.05em; opacity: 0.6; margin-bottom: 0.25rem;">Age Group</span>
+    <observablehq-loading></observablehq-loading><!--:4a5a56e1:-->
+  </div>
+</div>
+<p>On average, we can see that <strong>the main usage of AI is 'Search for answers'</strong>, with nearly 15% of all AI-users using AI for this purpose.
+This tells us that many users are using AI as a search engine. Another interesting insight follows when comparing the younger generation (18-24) to the old guard (65+). The most notable difference here is that <strong>older developers (65+) are more likely to use AI for 'Writing code', while younger developers (18-24) are more likely to use AI for 'Creating or maintaining documentation' and 'Generating content or synthetic data'</strong>.</p>
+<p>For all other tasks, the distribution of AI usage is relatively similar across different age groups. This could suggest that while there are some differences in the specific tasks that different age groups use AI for, there is a general trend towards using AI across a wide range of development tasks regardless of age. It may also indicate that the adoption of AI tools is becoming more widespread and integrated into various aspects of the development workflow across all demographics.</p>
+</div>
+</main>
+</div>
+</body>
+</html>

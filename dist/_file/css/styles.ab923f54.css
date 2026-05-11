@@ -1,0 +1,183 @@
+@import url('https://fonts.googleapis.com/css2?family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&display=swap');
+
+:root {
+  /* This overrides the default Observable font */
+  --sans-serif: 'Inter', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+}
+.hero {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  font-family: var(--sans-serif);
+  margin: 0rem 0 4rem;
+  text-wrap: balance;
+  text-align: center;
+  position: relative;
+  overflow: visible;
+  z-index: 1;
+}
+
+.hero h1 {
+  margin: 1rem 0;
+  padding: 1rem 0;
+  max-width: none;
+  font-size: 14vw;
+  font-weight: 900;
+  line-height: 1;
+  background: linear-gradient(30deg, var(--theme-foreground-focus), currentColor);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  position: relative;
+  z-index: 1;
+}
+
+.hero h2 {
+  margin: 0;
+  max-width: 34em;
+  font-size: 20px;
+  font-style: initial;
+  font-weight: 500;
+  line-height: 1.5;
+  color: var(--theme-foreground-muted);
+  position: relative;
+  z-index: 1;
+}
+
+@media (min-width: 640px) {
+  .hero h1 {
+    font-size: 90px;
+  }
+}
+.container {
+  max-width: 950px;
+  /* Adjust this value to make the center wider or narrower */
+  margin: 0 auto;
+  /* Centers the container */
+  padding: 0 2rem;
+  /* Ensures content doesn't touch the edges on mobile */
+}
+
+.container p,
+.container h1,
+.container h2,
+.container h3,
+.container li {
+  max-width: none;
+  /* Observable defaults this to 640px; this removes that limit */
+  line-height: 1.6;
+  /* Improves readability */
+}
+
+/* 3. Prettier Typography Tweaks */
+.container h1 {
+  font-weight: 800;
+  letter-spacing: -0.02em;
+  margin-top: 3rem;
+}
+
+.container h2 {
+  font-weight: 700;
+  letter-spacing: -0.01em;
+  color: var(--theme-foreground-focus);
+  margin-top: 2.5rem;
+}
+
+.container p {
+  color: var(--theme-foreground-muted);
+  font-size: 1.1rem;
+  margin-bottom: 1.5rem;
+  color: #333333;
+}
+
+/* Optional: If you want your text to be even more readable (narrower), 
+   you can create a separate class for prose */
+.prose {
+  max-width: 800px;
+  margin: 0 auto;
+}
+
+/* Make sure cards inside the container still look good */
+.card {
+  width: 100%;
+  box-sizing: border-box;
+}
+/* Style the selector inputs wrapper */
+.observablehq-input {
+  display: flex;
+  align-items: center;
+  /* Centers the boxes perfectly along the horizontal line */
+  gap: 0.75rem;
+  /* Slightly increased gap for better readability */
+  margin-bottom: 1rem;
+}
+
+/* Style the label OUTSIDE the box */
+.observablehq-input label,
+.observablehq-input>span,
+.observablehq-input .observablehq-label {
+  margin: 0;
+  padding: 0;
+  /* CRUCIAL: No padding here so the text aligns naturally */
+  font-size: 1rem;
+  /* Exactly matches the select box */
+  line-height: 1.2;
+  font-family: var(--sans-serif);
+  font-weight: 500;
+  /* Optional: makes the label slightly crisper */
+  color: #333333;
+  /* Matches your darker text preference */
+}
+
+/* Style the text INSIDE the box */
+select,
+.observablehq-input select,
+.observablehq-select {
+  margin: 0;
+  padding: 0.5rem 1rem;
+  /* Keeps the box looking like a button, but not too tall */
+  font-size: 1rem;
+  /* Exactly matches the label */
+  line-height: 1.2;
+  /* Exactly matches the label */
+  font-family: var(--sans-serif);
+  border-radius: 8px;
+  border: 2px solid var(--theme-foreground-muted);
+  background-color: var(--theme-background);
+  color: var(--theme-foreground);
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+select:hover,
+.observablehq-input select:hover,
+.observablehq-select:hover {
+  border-color: var(--theme-foreground-focus);
+}
+
+select:focus,
+.observablehq-input select:focus,
+.observablehq-select:focus {
+  outline: none;
+  border-color: var(--theme-foreground-focus);
+  box-shadow: 0 0 0 3px rgba(0, 0, 0, 0.1);
+}
+
+#particle-wrapper {
+  position: absolute;
+  top: 0;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 100vw;
+  height: 100%;
+  pointer-events: none;
+  overflow: hidden;
+  z-index: 0;
+}
+
+#particle-bg {
+  position: absolute;
+  z-index: 0;
+  pointer-events: none;
+  opacity: 0.35;
+}
