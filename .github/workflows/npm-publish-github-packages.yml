@@ -1,58 +1,40 @@
-name: Deploy Observable Site to GitHub Pages
+name: Deploy Pre-built Site to GitHub Pages
 
 on:
-  # Runs on pushes targeting the default branch
   push:
-    branches: ["main"] # Change to 'master' if that is your default branch
-
-  # Allows you to run this workflow manually from the Actions tab
+    branches: ["main"] # Change to 'master' if necessary
   workflow_dispatch:
 
-# Sets permissions of the GITHUB_TOKEN to allow deployment to GitHub Pages
 permissions:
   contents: read
   pages: write
   id-token: write
 
-# Allow one concurrent deployment
 concurrency:
   group: "pages"
   cancel-in-progress: true
 
 jobs:
-  build:
+  # This job simply grabs your existing dist folder and prepares it for Pages
+  prepare-files:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout code
         uses: actions/checkout@v4
 
-      - name: Setup Node.js
-        uses: actions/setup-node@v4
-        with:
-          node-version: 20
-          cache: 'npm'
-
-      - name: Install dependencies
-        run: npm ci
-
-      # THIS IS THE CRITICAL CHANGE
-      # We use 'build' to generate the static files instead of 'dev'
-      - name: Build site
-        run: npm run build
-
       - name: Upload artifact
         uses: actions/upload-pages-artifact@v3
         with:
-          # Observable Framework builds to the 'dist' folder by default.
-          # If your build outputs to a different folder, update this path.
+          # Points directly to the dist folder already in your repo
           path: ./dist 
 
+  # This job takes the prepared files and hosts them
   deploy:
     environment:
       name: github-pages
       url: ${{ steps.deployment.outputs.page_url }}
     runs-on: ubuntu-latest
-    needs: build
+    needs: prepare-files
     steps:
       - name: Deploy to GitHub Pages
         id: deployment
