@@ -300,3 +300,13 @@ This tells us that many users are using AI as a search engine. Another interesti
 For all other tasks, the distribution of AI usage is relatively similar across different age groups. This could suggest that while there are some differences in the specific tasks that different age groups use AI for, there is a general trend towards using AI across a wide range of development tasks regardless of age. It may also indicate that the adoption of AI tools is becoming more widespread and integrated into various aspects of the development workflow across all demographics.
 
 </div>
+
+<div class="container">
+
+# Conclusion
+
+This project shows that AI use in development is broad, but not uniform. The dataset is skewed toward younger and more active developers, so the visualizations should be read with that composition in mind. Even so, a clear pattern emerges: sentiment is generally favorable, especially among developers in the middle of their careers, while younger and hobbyist groups tend to be more divided.
+
+When we move from opinion to behavior, the radar chart suggests that AI is already embedded in everyday workflows, with search, documentation, and code-related tasks all showing meaningful usage. Taken together, the three views point to the same conclusion: AI is no longer a niche experiment in this community, but a practical tool whose adoption depends on both demographic context and the kind of work people are doing.
+
+</div>
