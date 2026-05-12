@@ -140,13 +140,13 @@ education_data = add_and_filtered(education_df, category="Education")
 # Profession
 profession_mapping = {
     'I am a developer by profession': 'Developer',
-    'I am not primarily a developer, but I write code sometimes as part of my work/studies': 'Non-Developer (Code Writer)',
+    'I am not primarily a developer, but I write code sometimes as part of my work/studies': 'Non-Developer',
     'I used to be a developer by profession, but no longer am': 'Former Developer',
     'I code primarily as a hobby': 'Hobbyist',
     'I work with developers or my work supports developers but am not a developer by profession': 'Support Role',
     'I am learning to code': 'Learning'
 }
-expected_profession_order = ["Developer", "Non-Developer (Code Writer)", "Former Developer", "Hobbyist", "Support Role", "Learning"]
+expected_profession_order = ["Developer", "Non-Developer", "Former Developer", "Hobbyist", "Support Role", "Learning"]
 profession_df = process_ai_sentiment_by_column(df, col='MainBranch', mapping_col='Profession', mapping=profession_mapping, expected_order=expected_profession_order)
 profession_data = add_and_filtered(profession_df, category="Profession")
 

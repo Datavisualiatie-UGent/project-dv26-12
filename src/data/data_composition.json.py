@@ -150,7 +150,7 @@ def main() -> None:
 
     profession_mapping = {
         "I am a developer by profession": "Developer",
-        "I am not primarily a developer, but I write code sometimes as part of my work/studies": "Non-Developer (Code Writer)",
+        "I am not primarily a developer, but I write code sometimes as part of my work/studies": "Non-Developer",
         "I used to be a developer by profession, but no longer am": "Former Developer",
         "I code primarily as a hobby": "Hobbyist",
         "I work with developers or my work supports developers but am not a developer by profession": "Support Role",
@@ -158,7 +158,7 @@ def main() -> None:
     }
     expected_profession_order = [
         "Developer",
-        "Non-Developer (Code Writer)",
+        "Non-Developer",
         "Former Developer",
         "Hobbyist",
         "Support Role",
