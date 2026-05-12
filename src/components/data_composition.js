@@ -5,13 +5,16 @@ export function CompositionBarChart(items, width, { title } = {}) {
     category: d.category,
     count: Number(d.count)
   }));
-
   const height = Math.min(520, Math.max(320, 18 * data.length));
+
+  // Compute an adaptive bottom margin so long x-axis labels don't get clipped
+  const maxLabelLen = data.reduce((m, d) => Math.max(m, String(d.category).length), 0);
+  const marginBottom = Math.max(0, Math.min(220, 10 + Math.round(maxLabelLen * 5)));
 
   return Plot.plot({
     width,
     height,
-    marginBottom: 80,
+    marginBottom,
     marginLeft: 70,
     style: { display: "block" },
     title,
