@@ -310,3 +310,10 @@ This project shows that AI use in development is broad, but not uniform. The dat
 When we move from opinion to behavior, the radar chart suggests that AI is already embedded in everyday workflows, with search, documentation, and code-related tasks all showing meaningful usage. Taken together, the three views point to the same conclusion: AI is no longer a niche experiment in this community, but a practical tool whose adoption depends on both demographic context and the kind of work people are doing.
 
 </div>
+
+
+<div style="text-align: center; padding: 3rem 1rem 1rem; opacity: 0.7; font-size: 0.875rem; border-top: 1px solid rgba(0, 0, 0, 0.1);">
+
+**Authors:** Martijn Heeren, Hendrik De Coster, Thor De Roeck
+
+</div>
