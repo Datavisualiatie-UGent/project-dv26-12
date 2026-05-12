@@ -58,6 +58,7 @@ export function AiRadarPlot(prepared, width, selectedAges) {
 
   return Plot.plot({
     width,
+    margin: 36,
     projection: {
       type: "azimuthal-equidistant",
       rotate: [0, -90],
@@ -95,10 +96,10 @@ export function AiRadarPlot(prepared, width, selectedAges) {
       }),
       Plot.text(tasks, {
         x: (d) => longitude(d),
-        y: 90 - 0.6,
+        y: 90 - 0.58,
         text: (d) => d,
-        lineWidth: 12,
-        fontSize: 11
+        lineWidth: 10,
+        fontSize: 10
       }),
       Plot.area(filteredData, {
         x1: (d) => longitude(d.task),
