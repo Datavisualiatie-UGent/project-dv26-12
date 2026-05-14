@@ -5,6 +5,7 @@
     "clean": "rimraf src/.observablehq/cache",
     "build": "observable build",
     "dev": "observable preview",
+    "dev:docker": "observable preview --host 0.0.0.0 --port 3000",
     "deploy": "observable deploy",
     "observable": "observable"
   },

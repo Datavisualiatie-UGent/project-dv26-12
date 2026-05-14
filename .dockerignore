@@ -1,0 +1,10 @@
+node_modules
+dist
+src/.observablehq/cache
+.venv
+notebooks
+.git
+.github
+npm-debug.log
+Dockerfile*
+docker-compose*.yml

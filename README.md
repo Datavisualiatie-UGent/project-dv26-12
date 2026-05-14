@@ -1,6 +1,25 @@
 # Project Datavisualisatie: How does AI shape the current development landscape
 *based on Stack Overflow Annual Survey 2025*
 
+## Run with Docker (one command)
+
+From the project root:
+
+```bash
+docker compose up --build
+```
+
+Then open http://localhost:3000.
+
+This container also includes Python + pandas so Observable data loaders such as
+`src/data/data_composition.json.py` can generate `data_composition.json` at runtime.
+
+To stop:
+
+```bash
+docker compose down
+```
+
 ## What to visualize
 
 ### Exploration: Bar chart exploring all questions
