@@ -19,9 +19,9 @@ Tot slot hebben we ook nog een visualisatie aan het begin van de site toegevoegd
 
 ## Taakverdeling:
 
-Voor de taakverdeling hebben we de 3 onderzoeksvragen verdeeld. Iedereen heeft dus op zijn minst 1 grafiek gemaakt met een bijhorende tekst. Iedereen heeft tijdens de presentatie ook zijn respectievelijke deel besproken. Martijn Heeren heeft daar bovenop de introductie van de presentatie op zich genomen.
+De drie onderzoeksvragen werden elk toebedeeld aan één teamlid. Iedereen was verantwoordelijk voor de visualisatie(s) en bijhorende tekst van zijn vraag, en besprak dit deel tijdens de presentatie. Martijn nam daarnaast de introductie van de data en bijhorende deel van de presentatie op zich.
 
-Voor de visuele opkuis en extras aan de website is geen werkverdeling gebeurt. Dit ging gewoon vanzelf.
+De visuele opkuis en kleine verbeteringen aan de website werden gezamenlijk opgepakt naargelang nodig.
 
 ### Martijn Heeren
 * "Waarvoor gebruiken mensen AI in hun development workflow?"
@@ -34,57 +34,53 @@ Voor de visuele opkuis en extras aan de website is geen werkverdeling gebeurt. D
 
 ## Samenwerking & tussentijdse resultaten:
 
-We zijn wekelijks bijeen gekomen om dit project tot een goed eind te brengen. De samenwerking verliep vlot en iedereen werkte goed mee.
+We kwamen wekelijks samen om voortgang te bespreken en elkaar te helpen. Hieronder een logboek per persoon.
 
 ### Martijn Heeren
-Al snel een goede visualisatie voor de data\
-<img src="images/verslag/martijn.png" alt="Dataset Composition" 
-width="400"/>
+Eerste werkende visualisatie voor de AI usage data:\
+<img src="images/verslag/martijn.png" width="400"/>
 
-Interactive deel voor de intro over "dataset composition" toegevoegd\
-<img src="images/verslag/martijn2.png" alt="Dataset Composition" 
-width="400"/>
+Interactief onderdeel voor de dataset composition intro toegevoegd:\
+<img src="images/verslag/martijn2.png" width="400"/>
 
-Ondersteuning voor filtering categoriën + grote grafieken toegevoegd\
-<img src="images/verslag/martijn3.png" alt="Dataset Composition" 
-width="400"/>
+Filtering op categorieën + grotere grafieken:\
+<img src="images/verslag/martijn3.png" width="400"/>
 
-Knoppen voor filtering leeftijd in grafiek verwerkt en veel mooier gemaakt\
-<img src="images/verslag/radar_chart_final.png" alt="Dataset Composition" 
-width="400"/>
+Leeftijdsfiltering verwerkt in knoppen, visueel verder verfijnd:\
+<img src="images/verslag/radar_chart_final.png" width="400"/>
+
 
 ### Thor De Roeck
-Getallen + kleur te overweldigend\
-<img src="images/verslag/thor.png" alt="Dataset Composition" 
-width="400"/>
+Eerste poging, te veel getallen en kleur tegelijk:\
+<img src="images/verslag/thor.png" width="400"/>
 
-Goede eerste grafiek\
-<img src="images/verslag/thor2.png" alt="Dataset Composition" width="400"/>
+Eerste goede grafiek:\
+<img src="images/verslag/thor2.png" width="400"/>
 
-Sommige categorieen waren te groot, later gefiltered\
-<img src="images/verslag/thor3.png" alt="Dataset Composition" width="400"/>
+Categorieën ingekort na feedback dat sommige te breed waren:\
+<img src="images/verslag/thor3.png" width="400"/>
 
-Waffle chart overwogen, maar was moeilijker te vergelijken dan bar chart\
-<img src="images/verslag/thor4.png" alt="Dataset Composition" width="400"/>
+Waffle chart getest als alternatief, maar moeilijker te lezen dan een bar chart:\
+<img src="images/verslag/thor4.png" width="400"/>
 
-Filtering voor "unsure" en "indifferent" toegevoegd
-<img src="images/verslag/thor5.png" alt="Dataset Composition" width="400"/>
+Filtering voor "unsure" en "indifferent" toegevoegd als eindresultaat:\
+<img src="images/verslag/thor5.png" width="400"/>
 
 ### Hendrik De Coster
-Eerst met absolute getallen proberen werken\
-<img src="images/verslag/heatmap.png" alt="Dataset Composition" width="400"/>
+Eerste poging met absolute aantallen:\
+<img src="images/verslag/heatmap.png" width="400"/>
 
-Chord diagram was visueel overweldigend\
-<img src="images/verslag/chord_diagram.png" alt="Dataset Composition" width="400"/>
+Chord diagram getest — visueel te overweldigend:\
+<img src="images/verslag/chord_diagram.png" width="400"/>
 
-Sakey diagrammen per model getest, deze leken teveel op elkaar\
-<img src="images/verslag/sankey.png" alt="Dataset Composition" width="400"/>
+Sankey diagrammen per model getest — leken te sterk op elkaar:\
+<img src="images/verslag/sankey.png" width="400"/>
 
-Tooltips toegevoegd\
-<img src="images/verslag/tooltip.png" alt="Dataset Composition" width="400"/>
+Tooltips toegevoegd voor meer context:\
+<img src="images/verslag/tooltip.png" width="400"/>
 
-Canvas voor titel toegevoegd\
-<img src="images/verslag/title_canvas.png" alt="Dataset Composition" width="400"/>
+Titelcanvas als finishing touch:\
+<img src="images/verslag/title_canvas.png" width="400"/>
 
 ## Resultaat: 
 
